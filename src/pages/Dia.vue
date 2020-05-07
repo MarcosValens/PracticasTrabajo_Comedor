@@ -16,6 +16,7 @@
         <q-list bordered separator>
           <q-item v-for="alumne in alumnes">
             <q-item-section>{{alumne}}</q-item-section>
+
           </q-item>
         </q-list>
       </q-card-section>
