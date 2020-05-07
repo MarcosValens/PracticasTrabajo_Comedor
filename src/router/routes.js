@@ -14,7 +14,6 @@ const routes = [
       { path: 'dia/:id', component: () => import('pages/Dia.vue') },
       { path: 'professor/:id', component: () => import('pages/Professor.vue') },
       { path: 'usuari/:id', component: () => import('pages/Usuari.vue') },
-
     ]
   },
   {
@@ -24,7 +23,7 @@ const routes = [
       { path: '', component: () => import('pages/Login.vue') },
     ]
   }
-]
+];
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
