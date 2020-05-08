@@ -5,6 +5,7 @@ pipeline {
       steps {
         sh  '''
             echo "preparamos enviroment"
+            npm install
             '''
       }
     }
