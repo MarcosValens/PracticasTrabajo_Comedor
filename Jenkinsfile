@@ -43,6 +43,8 @@ pipeline {
             steps {
                 sh  '''
                     echo "Contruimos la imagen docker"
+                    cp ./dist/spa ./spa
+                    docker build -t imagen-menjador .
                     '''
             }
     }
