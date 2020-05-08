@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -10,34 +10,27 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
+        <q-avatar>
+          <img src="~/assets/esliceu-logo.png" />
+        </q-avatar>
+        <q-toolbar-title>Menjador App</q-toolbar-title>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <div>v0.0.1</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <router-link class="drawer-link" v-for="link in links" :key="link.title" :to="link.link">
+          <q-item clickable v-ripple > 
+          <q-item-section avatar>
+            <q-icon :name="link.icon" />
+          </q-item-section>
+          <q-item-section>{{link.title}}</q-item-section>
+        </q-item>
+        </router-link>
       </q-list>
+      
     </q-drawer>
 
     <q-page-container>
@@ -47,63 +40,55 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
 
 export default {
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
-    EssentialLink
   },
 
-  data () {
+  data() {
     return {
       leftDrawerOpen: false,
-      essentialLinks: [
+      links: [
         {
-          title: 'Docs',
-          caption: 'quasar.dev',
-          icon: 'school',
-          link: 'https://quasar.dev'
+          title: "Inici",
+          icon: "home",
+          link: "/"
         },
         {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
+          title: "Alumnes",
+          icon: "school",
+          link: "/alumnes"
         },
         {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
+          title: "Professors",
+          icon: "people",
+          link: "/professors"
         },
         {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
+          title: "Dies",
+          icon: "wb_sunny",
+          link: "/dies"
         },
         {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
+          title: "Usuaris",
+          icon: "account_circle",
+          link: "/usuaris"
         },
         {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        },
-        {
-          title: 'Quasar Awesome',
-          caption: 'Community Quasar projects',
-          icon: 'favorite',
-          link: 'https://awesome.quasar.dev'
+          title: "Pasar llista",
+          icon: "list_alt",
+          link: "/llista"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
+<style lang="stylus">
+.drawer-link {
+  color: $dark;
+  text-decoration: none;
+}
+</style>>
