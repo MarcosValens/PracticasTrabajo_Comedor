@@ -17,6 +17,12 @@ quasar dev
 ```bash
 quasar build
 ```
+## Use of env variables
+```js
+this.$env.VARIABLE_NAME
+```
+Put more variables in config.json
 
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+
