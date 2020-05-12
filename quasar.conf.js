@@ -14,6 +14,7 @@ module.exports = function (/* ctx */) {
     boot: [
       
       'axios',
+      'env'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

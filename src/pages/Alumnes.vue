@@ -1,21 +1,30 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-table
+  <q-page class="q-pa-md">
+    <div class="column" style="width: 80%; margin-left: 10%">
+      <div class="col">
+        <div class="row justify-between q-mb-md">
+          <div class="col-3">
+            <q-input v-model="filter.nom" label="Nom" @input="filterAlumnes"/>
+          </div>
+          <div class="col-3">
+            <q-input v-model="filter.ap1" label="Primer Cognom" @input="filterAlumnes"/>
+          </div>
+          <div class="col-3">
+            <q-input v-model="filter.ap2" label="Segon Cognom" @input="filterAlumnes"/>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <q-table
       title="Alumnes"
-      :data="data"
+      :data="alumnesFiltered"
       :columns="columns"
-       @row-click="rowclick(evt, row)"
+        @row-click="onRowClick"
     >
-  <!--    <template slot="top-right" >
-        <q-btn
-          @click="$router.push('alumne')"
-          icon="add_circle"
-          size="14px"
-          color="primary"
-          label="Afegir"
-        />
-      </template> -->
     </q-table>
+      </div>
+    </div>
+   
   </q-page>
 </template>
 
@@ -25,6 +34,11 @@ export default {
   name: "PagesAlumne",
   data() {
     return {
+      filter: {
+        nom: "",
+        ap1: "",
+        ap2: ""
+      },
       columns: [
         {
           name: "codi",
@@ -63,83 +77,23 @@ export default {
           sortable: true
         }
       ],
-      data: [
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        },
-        {
-          codi: 1293912,
-          nom: "Roberto",
-          ap1: "Caprio",
-          ap2: "Doe",
-          expedient: 199129
-        }
-      ]
+      alumnes: [],
+      alumnesFiltered: []
     };
   },
+  beforeCreate() {
+    /** UNTESTED */
+    this.$axios.get(this.$env.BACKEND_URL + "/alumnes").then(function(alumnes) {
+      this.alumnes = alumnes
+      this.alumnesFiltered = alumnes
+    })
+  },
   methods: {
-      rowClick: function (evt, row) {
-          console.log(evt, row)
+      onRowClick: function (evt, row) {
+          this.$router.push(`/alumne/${row.codi}`)
+      },
+      filterAlumnes(){
+        this.alumnesFiltered = this.alumnes.filter(alumne => alumne.nom.includes(this.filter.nom) && alumne.ap1.includes(this.filter.ap1) && alumne.ap2.includes(this.filter.ap2))
       }
   }
 };
