@@ -67,7 +67,7 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // rtl: false, // https://quasar.dev/options/rtl-support
       // preloadChunks: true,
@@ -82,9 +82,9 @@ module.exports = function (ctx) {
       extendWebpack (cfg) {
       },
       env: ctx.dev ? {
-        BACKEND_URL: "http://localhost:8080"
+        BACKEND_URL: JSON.stringify("http://localhost:8080")
       } : {
-        BACKEND_URL: "http://localhost:8080"
+        BACKEND_URL: JSON.stringify("http://localhost:8080")
       }
     },
 
