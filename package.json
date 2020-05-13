@@ -8,6 +8,8 @@
   "author": "esliceu",
   "private": true,
   "scripts": {
+    "build": "quasar build",
+    "dev": "quasar dev",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
