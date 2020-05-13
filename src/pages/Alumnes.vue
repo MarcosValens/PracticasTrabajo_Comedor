@@ -24,7 +24,7 @@
     </q-table>
       </div>
     </div>
-   
+
   </q-page>
 </template>
 
