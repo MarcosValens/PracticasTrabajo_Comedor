@@ -83,7 +83,7 @@ export default {
   },
   beforeCreate() {
     /** UNTESTED */
-    this.$axios.get(this.$env.BACKEND_URL + "/alumnes").then(function(alumnes) {
+    this.$axios.get(process.env.BACKEND_URL + "/alumnes").then(function(alumnes) {
       this.alumnes = alumnes
       this.alumnesFiltered = alumnes
     })
