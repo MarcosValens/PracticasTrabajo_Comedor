@@ -82,10 +82,11 @@ export default {
     };
   },
   beforeCreate() {
-    /** UNTESTED */
-    this.$axios.get(process.env.BACKEND_URL + "/alumnes").then(function(alumnes) {
-      this.alumnes = alumnes
-      this.alumnesFiltered = alumnes
+    /** UNTESTED  */
+    let _this = this
+    this.$axiosBackend.get( "/alumnes").then(function (alumnes) {
+      _this.alumnes = alumnes
+      _this.alumnesFiltered = alumnes
     })
   },
   methods: {
