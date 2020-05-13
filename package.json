@@ -8,6 +8,8 @@
   "author": "esliceu",
   "private": true,
   "scripts": {
+    "build": "quasar build",
+    "dev": "quasar dev",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
@@ -16,7 +18,8 @@
     "quasar": "^1.0.0"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0"
+    "@quasar/app": "^1.0.0",
+    "dotenv": "^8.2.0"
   },
   "engines": {
     "node": ">= 10.18.1",

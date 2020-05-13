@@ -6,14 +6,14 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
-module.exports = function (/* ctx */) {
+module.exports = function (ctx) {
     return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       
-      'axios',
+      'axios'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -81,6 +81,11 @@ module.exports = function (/* ctx */) {
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack (cfg) {
       },
+      env: ctx.dev ? {
+        BACKEND_URL: "http://localhost:8080"
+      } : {
+        BACKEND_URL: "http://localhost:8080"
+      }
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
