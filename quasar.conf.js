@@ -82,9 +82,9 @@ module.exports = function (ctx) {
       extendWebpack (cfg) {
       },
       env: ctx.dev ? {
-        BACKEND_URL: "http://localhost:8080"
+        BACKEND_URL: JSON.stringify("http://localhost:8080")
       } : {
-        BACKEND_URL: "http://localhost:8080"
+        BACKEND_URL: JSON.stringify("http://localhost:8080")
       }
     },
 
