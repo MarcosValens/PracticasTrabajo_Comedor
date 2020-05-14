@@ -56,7 +56,7 @@ pipeline {
         steps  {
             sh  '''
                 echo "Subimos la imagen docker creada"
-                docker tag  imagen-menjador docker.tresee.app/imagen-menjador
+                docker tag  imagen-menjador  registry-back.esliceu.com/imagen-menjador
                 docker push registry-back.esliceu.com/imagen-menjador
                 '''
         }
