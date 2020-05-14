@@ -56,6 +56,8 @@ pipeline {
         steps  {
             sh  '''
                 echo "Subimos la imagen docker creada"
+                ping -c 4 registry-back.esliceu.com
+                ping -c 4 registry-back.esliceu.com:5000
                 docker tag  imagen-menjador  http://registry-back.esliceu.com:5000/imagen-menjador
                 docker push http://registry-back.esliceu.com:5000/imagen-menjador
                 '''
