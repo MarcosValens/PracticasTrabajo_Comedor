@@ -46,6 +46,7 @@ pipeline {
                     cp ./dist/spa ./spa
                     docker build -t imagen-menjador .
                     '''
+                cleanWs()
             }
     }
 
@@ -59,6 +60,7 @@ pipeline {
                 docker tag  imagen-menjador  registry-back.esliceu.com/imagen-menjador
                 docker push registry-back.esliceu.com/imagen-menjador
                 '''
+            cleanWs()
         }
     }
 
@@ -70,6 +72,7 @@ pipeline {
         sh  '''
             echo "desplegamos"
             '''
+        cleanWs()
         }
     }
   }
