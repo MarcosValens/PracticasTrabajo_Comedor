@@ -29,7 +29,6 @@
     data(){
       return{
         urlSubirXML:"http://localhost:8080/uploadxml"
-
       }
     },
     methods:{
