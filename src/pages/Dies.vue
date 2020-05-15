@@ -1,27 +1,37 @@
 <template>
-  <div class="q-pa-md window-height window-width row justify-center items-center">
-    <div class="q-gutter-md row items-start">
-
-      <template>
-        <div class="q-pa-md">
-          <q-table
-            title="Dies"
-            dense
-            :data="data"
-            :columns="columns"
-            row-key="name"
-          >
-
-            </q-table>
+  <q-page class="q-pa-md">
+    <div class="column" style="width: 80%; margin-left: 10%">
+      <div class="col">
+        <div class="row justify-between q-mb-md">
+          <div class="col-3">
+            <q-input v-model="filter.dia" label="Dia" @input="filterDies"/>
+          </div>
+          <div class="col-3">
+            <q-input v-model="filter.mes" label="Mes" @input="filterDies"/>
+          </div>
+          <div class="col-3">
+            <q-input v-model="filter.any" label="Any" @input="filterDies"/>
+          </div>
         </div>
-      </template>
+      </div>
+
+      <div class="col">
+        <q-table
+        title="Dies"
+        :data="dataFilter"
+        :columns="columns"
+        @row-click="rowClick"
+      >
+        </q-table>
+      </div>
 
     </div>
-  </div>
+  </q-page>
+
 </template>
 <script>
     export default {
-        data () {
+        data() {
             return {
                 columns: [
                     {
@@ -32,8 +42,8 @@
                         field: row => row.date,
                         sortable: true
                     },
-                    { name: 'nombre alumnes', align: "center", label: 'Nombre alumnes', field: 'alumnes'},
-                    { name: 'nombre profesors', align:"center", label: 'Nombre Professors', field: 'professors'},
+                    {name: 'nombre alumnes', align: "center", label: 'Nombre alumnes', field: 'alumnes'},
+                    {name: 'nombre profesors', align: "center", label: 'Nombre Professors', field: 'professors'},
                 ],
                 data: [
                     {
@@ -56,8 +66,38 @@
                         alumnes: 200,
                         professors: 8,
                     },
-                ]
+                    {
+                        date: '04/01/2019',
+                        alumnes: 200,
+                        professors: 8,
+                    }
+                ],
+                filter: {
+                    dia: '',
+                    mes: '',
+                    any: ''
+                },
+                dataFilter: []
             }
+        },
+        methods: {
+            filterDies(){
+              this.dataFilter = this.data.filter((dia) => {
+                  let date = dia.date.split("/");
+                  let diaNum = date[0].toString();
+                  let mesNum = date[1].toString();
+                  let anyNum = date[2].toString();
+                  return (diaNum.startsWith(this.filter.dia) && mesNum.startsWith(this.filter.mes) && anyNum.startsWith(this.filter.any));
+              })
+            },
+            rowClick(event, row){
+                console.log(row.date);
+                //TODO modificarlo según lo que devuelva la base de datos
+                this.$router.push("/dia/1")
+            }
+        },
+        created() {
+            this.dataFilter = this.data;
         }
     }
 </script>
