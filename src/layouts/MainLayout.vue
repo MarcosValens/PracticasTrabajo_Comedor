@@ -22,7 +22,7 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-list>
         <router-link class="drawer-link" v-for="link in links" :key="link.title" :to="link.link">
-          <q-item clickable v-ripple > 
+          <q-item clickable v-ripple >
           <q-item-section avatar>
             <q-icon :name="link.icon" />
           </q-item-section>
@@ -30,7 +30,7 @@
         </q-item>
         </router-link>
       </q-list>
-      
+
     </q-drawer>
 
     <q-page-container>
@@ -80,6 +80,11 @@ export default {
           title: "Pasar llista",
           icon: "list_alt",
           link: "/llista"
+        },
+        {
+          title: "Panell d'administració",
+          icon: "fas fa-crown",
+          link: "/admin"
         }
       ]
     };
