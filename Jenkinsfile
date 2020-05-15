@@ -57,7 +57,7 @@ pipeline {
         steps  {
             sh  '''
 
-                ssh deploy.esliceu.com "ls -la; pwd"
+                ssh deploy.esliceu.com "ls -la; pwd; docker images; docker ps -a"
 
                 echo "Subimos la imagen docker creada"
                 docker tag  imagen-menjador  registry-back.esliceu.com/imagen-menjador
