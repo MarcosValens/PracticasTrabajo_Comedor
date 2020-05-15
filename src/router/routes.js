@@ -14,6 +14,7 @@ const routes = [
       { path: 'dia/:id', component: () => import('pages/Dia.vue') },
       { path: 'professor/:id', component: () => import('pages/Professor.vue') },
       { path: 'usuari/:id', component: () => import('pages/Usuari.vue') },
+      { path: 'admin', component: () => import('pages/PanellAdmin.vue') },
     ]
   },
   {
