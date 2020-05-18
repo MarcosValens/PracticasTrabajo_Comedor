@@ -12,7 +12,6 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
-
       'axios'
     ],
 
@@ -53,7 +52,9 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify'
+      ]
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -82,9 +83,9 @@ module.exports = function (ctx) {
       extendWebpack (cfg) {
       },
       env: ctx.dev ? {
-        BACKEND_URL: JSON.stringify("http://localhost:8080")
+        CORE_URL: JSON.stringify("http://localhost:8080")
       } : {
-        BACKEND_URL: JSON.stringify("https://menjador.esliceu.com/api/")
+        CORE_URL: JSON.stringify("https://menjador.esliceu.com/api")
       }
     },
 

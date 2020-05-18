@@ -84,7 +84,7 @@ export default {
   beforeCreate() {
     /** UNTESTED  */
     let _this = this
-    this.$axiosBackend.get( "/alumnes").then(function (alumnes) {
+    this.$axiosCore.get( "/alumnes").then(function (alumnes) {
       _this.alumnes = alumnes
       _this.alumnesFiltered = alumnes
     })
