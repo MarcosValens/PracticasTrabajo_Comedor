@@ -32,6 +32,10 @@
 <script>
 export default {
   name: "PagesAlumne",
+  async created() {
+    const response = await this.$axiosCore.get( "/alumnes")
+    this.alumnes = response.data;
+  },
   data() {
     return {
       filter: {
@@ -80,14 +84,6 @@ export default {
       alumnes: [],
       alumnesFiltered: []
     };
-  },
-  beforeCreate() {
-    /** UNTESTED  */
-    let _this = this
-    this.$axiosCore.get( "/alumnes").then(function (alumnes) {
-      _this.alumnes = alumnes
-      _this.alumnesFiltered = alumnes
-    })
   },
   methods: {
       onRowClick: function (evt, row) {
