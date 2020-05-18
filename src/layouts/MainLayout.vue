@@ -8,7 +8,8 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click.capture="drawerClick"
+          @click="drawer = !drawer"
         />
         <q-avatar>
           <img src="~/assets/esliceu-logo.png" />
@@ -19,7 +20,11 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
+    <q-drawer v-model="leftDrawerOpen" 
+    show-if-above bordered 
+    content-class="bg-grey-1"
+    :mini="!drawer || miniState"
+    >
       <q-list>
         <router-link class="drawer-link" v-for="link in links" :key="link.title" :to="link.link">
           <q-item clickable v-ripple >
@@ -30,7 +35,6 @@
         </q-item>
         </router-link>
       </q-list>
-
     </q-drawer>
 
     <q-page-container>
@@ -59,7 +63,9 @@ export default {
         {
           title: "Alumnes",
           icon: "school",
-          link: "/alumnes"
+          link: "/alumnes",
+          grantedRoles: [
+          ]
         },
         {
           title: "Professors",
@@ -86,8 +92,22 @@ export default {
           icon: "fas fa-crown",
           link: "/admin"
         }
-      ]
+      ],
+      drawer: false,
+      miniState: true,
+      rol: ''
     };
+  },
+  methods: {
+    drawerClick (e) {
+      if (this.miniState) {
+        this.miniState = false;
+        e.stopPropagation()
+      }
+    }
+  },
+  created() {
+    this.rol = localStorage.getItem('rol').toLowerCase();
   }
 };
 </script>
