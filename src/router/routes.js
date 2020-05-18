@@ -4,17 +4,17 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: 'alumnes', component: () => import('pages/Alumnes.vue') },
-      { path: 'professors', component: () => import('pages/Professors.vue') },
-      { path: 'usuaris', component: () => import('pages/Usuaris.vue') },
-      { path: 'dies', component: () => import('pages/Dies.vue') },
-      { path: 'llista', component: () => import('pages/Llista.vue') },
-      { path: 'alumne/:id', component: () => import('pages/Alumne.vue') },
-      { path: 'dia/:id', component: () => import('pages/Dia.vue') },
-      { path: 'professor/:id', component: () => import('pages/Professor.vue') },
-      { path: 'usuari/:id', component: () => import('pages/Usuari.vue') },
-      { path: 'admin', component: () => import('pages/PanellAdmin.vue') },
+      { path: '', component: () => import('pages/private/Index.vue') },
+      { path: 'alumnes', component: () => import('pages/private/Alumnes.vue') },
+      { path: 'professors', component: () => import('pages/private/Professors.vue') },
+      { path: 'usuaris', component: () => import('pages/private/Usuaris.vue') },
+      { path: 'dies', component: () => import('pages/private/Dies.vue') },
+      { path: 'llista', component: () => import('pages/private/Llista.vue') },
+      { path: 'alumne/:id', component: () => import('pages/private/Alumne.vue') },
+      { path: 'dia/:id', component: () => import('pages/private/Dia.vue') },
+      { path: 'professor/:id', component: () => import('pages/private/Professor.vue') },
+      { path: 'usuari/:id', component: () => import('pages/private/Usuari.vue') },
+      { path: 'admin', component: () => import('pages/private/PanellAdmin.vue') },
     ]
   },
   {
@@ -30,7 +30,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/Error404.vue')
+    component: () => import('pages/private/Error404.vue')
   })
 }
 
