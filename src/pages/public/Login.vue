@@ -51,8 +51,9 @@
           // Ok, guardamos tokens y a parte privada
         }else {
           // No ok
-
           this.notify('Email o contraseña incorrecto')
+          this.login.email = '';
+          this.login.password = '';
         }
       },
       notify(message){
