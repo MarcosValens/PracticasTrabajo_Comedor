@@ -94,7 +94,7 @@ export default {
         }
       ],
       drawer: false,
-      miniState: true,
+      miniState: false,
       rol: ''
     };
   },
@@ -107,7 +107,7 @@ export default {
     }
   },
   created() {
-    this.rol = localStorage.getItem('rol').toLowerCase();
+    //this.rol = localStorage.getItem('rol').toLowerCase();
   }
 };
 </script>
