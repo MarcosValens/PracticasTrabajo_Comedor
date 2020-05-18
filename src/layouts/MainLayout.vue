@@ -26,7 +26,7 @@
     >
       <q-list>
         <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link" >
-          <q-item-section avatar top>
+          <q-item-section avatar >
             <q-icon :name="link.icon" />
           </q-item-section>
           <q-item-section>
