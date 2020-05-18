@@ -32,6 +32,7 @@
   </q-page>
 </template>
 
+
 <script>
   export default {
     name: 'Login',
