@@ -84,7 +84,10 @@ module.exports = function (ctx) {
       extendWebpack (cfg) {
       },
       env: ctx.dev ? {
-        CORE_URL: JSON.stringify("http://localhost:8080")
+        CORE_URL: JSON.stringify("http://localhost:8080"),
+        CUINER_ROl: JSON.stringify("cuiner"),
+        MONITOR_ROL: JSON.stringify("monitor"),
+        ADMIN_ROL: JSON.stringify("admin"),
       } : {
         CORE_URL: JSON.stringify("https://menjador.esliceu.com/api")
       }
