@@ -22,7 +22,13 @@ export default async ({Vue, router}) => {
 
     const originalRequest = error.config;
 
-    if (error.response.status === 401) {
+
+    /*
+    * Ponemos que sea un error y a la vez no sea login,
+    * por que si nos da este error en el login significa que
+    * no se ha podido autenticar, no que el token este caducado
+    * */
+    if (error.response.status === 401 && router.currentRoute.path !== '/login') {
       // UNAUTORIZED, token no valido o token caducado.
 
       /*
