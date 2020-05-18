@@ -12,28 +12,28 @@
           @click="drawer = !drawer"
         />
         <q-avatar>
-          <img src="~/assets/esliceu-logo.png" />
+          <q-img src="~/assets/esliceu-logo.png" alt="Logo de el liceu"/>
         </q-avatar>
         <q-toolbar-title>Menjador App</q-toolbar-title>
 
-        <div>v0.0.1</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" 
-    show-if-above bordered 
+    <q-drawer v-model="leftDrawerOpen"
+    show-if-above bordered
     content-class="bg-grey-1"
     :mini="!drawer || miniState"
     >
       <q-list>
-        <router-link class="drawer-link" v-for="link in links" :key="link.title" :to="link.link">
-          <q-item clickable v-ripple >
-          <q-item-section avatar>
+        <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link" >
+          <q-item-section avatar top>
             <q-icon :name="link.icon" />
           </q-item-section>
-          <q-item-section>{{link.title}}</q-item-section>
+          <q-item-section>
+            <q-item-label lines="1" style="font-size: 1.2em">{{link.title}}</q-item-label>
+          </q-item-section>
         </q-item>
-        </router-link>
+
       </q-list>
     </q-drawer>
 
@@ -111,9 +111,6 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
-.drawer-link {
-  color: $dark;
-  text-decoration: none;
-}
+<style >
+
 </style>>
