@@ -218,98 +218,98 @@
             rol: "Alumne"
           },
           {
-            codi: 9131223,
+            codi: 9131345223,
             nom: "Xavi",
             ap1: "Doe",
             ap2: "Doe",
             rol: "Professor"
           },
           {
-            codi: 1013223,
+            codi: 1013453223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 101353223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 105613223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 31013223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 10135223,
+            nom: "Miguel",
+            ap1: "Caprio",
+            ap2: "Doe",
+            rol: "Alumne"
+          },
+          {
+            codi: 10136223,
+            nom: "Miguel",
+            ap1: "Monteiro ",
+            ap2: "Doe",
+            rol: "Alumne"
+          },
+          {
+            codi: 10913223,
+            nom: "Miguel Claveri",
+            ap1: "Caprio",
+            ap2: "Doe",
+            rol: "Alumne"
+          },
+          {
+            codi: 10183223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 10131223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 10132223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 10133223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
+            codi: 10143223,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
             rol: "Alumne"
           },
           {
-            codi: 1013223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 1013223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 1013223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 1013223,
+            codi: 1013253,
             nom: "Roberto",
             ap1: "Caprio",
             ap2: "Doe",
