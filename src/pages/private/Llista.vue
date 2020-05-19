@@ -31,17 +31,22 @@
           </template>
         </q-table>
       </div>
-      <div class="col-3 bg-indigo q-pa-sm">
-        <q-card class="fixed">
+      <div class="col-3  q-pa-sm flex justify-center">
+        <q-card class="fixed " >
           <q-card-section>
             <div class="text-h6">
-              Opciones comunes
+              Selecciones comunes
             </div>
           </q-card-section>
           <q-separator inset="" />
-          <q-card-section>
+          <q-card-section class="column">
+          <q-btn label="Selección igual que la semana pasada" class="q-ma-sm"/>
+          <q-btn label="Selección igual que ayer" class="q-ma-sm"/>
 
           </q-card-section>
+          <q-card-actions align="right">
+            <q-btn   label="Guardar"/>
+          </q-card-actions>
         </q-card>
       </div>
     </div>
