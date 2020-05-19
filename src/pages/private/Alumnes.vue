@@ -33,8 +33,10 @@
 export default {
   name: "PagesAlumne",
   async created() {
-    const response = await this.$axiosCore.get( "/alumnes")
+    const response = await this.$axiosCore.get( "/getTodosAlumnosCurso")
     this.alumnes = response.data;
+    this.alumnesFiltered = this.alumnes;
+    console.log(this.alumnes)
   },
   data() {
     return {
