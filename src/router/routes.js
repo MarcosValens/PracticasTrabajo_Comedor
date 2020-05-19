@@ -4,7 +4,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/private/Index.vue') },
+      { path: 'inici', component: () => import('pages/private/Index.vue') },
       { path: 'alumnes', component: () => import('pages/private/Alumnes.vue') },
       { path: 'professors', component: () => import('pages/private/Professors.vue') },
       { path: 'usuaris', component: () => import('pages/private/Usuaris.vue') },
@@ -22,6 +22,29 @@ const routes = [
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { path: '', component: () => import('pages/public/Login.vue') },
+      { path: 'oatuh/calback',
+        beforeEnter: (to, from, next) => {
+          const url = new URL(location);
+          const accessToken = url.searchParams.get('access_token');
+          const refreshToken = url.searchParams.get('refresh_token');
+
+          // TODO, cuando pasen el rol, lo guardaremos
+          //const rol = url.searchParams.get('rol');
+          //localStorage.setItem('rol', rol);
+
+          /*
+          * Save tokens
+          * */
+          localStorage.setItem('access_token', accessToken);
+          localStorage.setItem('refresh_token', refreshToken);
+
+          /*
+          * Limpiar url de params
+          * */
+          window.history.pushState({}, document.title, "/");
+          next('/inici');
+        }
+      },
     ]
   }
 ];

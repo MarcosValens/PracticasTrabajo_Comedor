@@ -58,7 +58,7 @@ export default {
         {
           title: "Inici",
           icon: "home",
-          link: "/"
+          link: "/inici"
         },
         {
           title: "Alumnes",
