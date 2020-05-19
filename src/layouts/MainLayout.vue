@@ -19,10 +19,12 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen"
-    show-if-above bordered
-    content-class="bg-grey-1"
+    <q-drawer 
+    v-model="drawer"
+    show-if-above 
+    bordered
     :mini="!drawer || miniState"
+    content-class="bg-grey-2"
     >
       <q-list>
         <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link" >
@@ -33,8 +35,17 @@
             <q-item-label lines="1" style="font-size: 1.2em">{{link.title}}</q-item-label>
           </q-item-section>
         </q-item>
-
       </q-list>
+      <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
+          <q-btn
+            dense
+            round
+            unelevated
+            color = primary
+            icon="chevron_left"
+            @click="miniState = true"
+          ></q-btn>
+        </div>
     </q-drawer>
 
     <q-page-container>
@@ -53,12 +64,11 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: false,
       links: [
         {
           title: "Inici",
           icon: "home",
-          link: "/inici"
+          link: "/"
         },
         {
           title: "Alumnes",
@@ -102,7 +112,7 @@ export default {
     drawerClick (e) {
       if (this.miniState) {
         this.miniState = false;
-        e.stopPropagation()
+        e.stopPropagation();
       }
     }
   },
