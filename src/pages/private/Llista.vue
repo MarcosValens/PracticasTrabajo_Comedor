@@ -1,10 +1,25 @@
 <template>
-  <q-page class="q-pa-xl">
+  <q-page class="q-pa-md">
 
-    <div class="text-h4 q-pl-sm">Passar llista</div>
+    <div class="flex justify-between q-pa-sm">
+      <div class="text-h4 ">Pasar llista</div>
+      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" label="Selecciones comunes" icon="fas fa-angle-down">
+        <q-menu fit>
+          <q-list style="min-width: 100px">
+            <q-item clickable @click="seleccionarSemanaPasada">
+              <q-item-section>Igual semana pasada</q-item-section>
+            </q-item>
+            <q-item clickable @click="seleccionarDiaPasado">
+              <q-item-section>Seleccion igual que ayer</q-item-section>
+            </q-item>
+
+          </q-list>
+        </q-menu>
+      </q-btn>
+    </div>
 
     <div class="row">
-      <div class="col-9  q-pa-sm">
+      <div class="col-lg-9 col-12  q-pa-sm">
         <q-table
           :data="usuariosFiltrados"
           :columns="columns"
@@ -12,13 +27,14 @@
           :selected-rows-label="getSelectedString"
           selection="multiple"
           row-key="codi"
-          :selected.sync="selected"
+          :selected.sync="usuariosSeleccionados"
           rows-per-page-label="Usuarios por fila"
           :rows-per-page-options="[5,12,0]"
           separator="cell"
         >
           <template v-slot:top-right>
-            <q-input outlined dense debounce="300" v-model="filtroDeUsuarios" placeholder="Search" @input="filterUsuarios">
+            <q-input outlined dense debounce="300" v-model="filtroDeUsuarios" placeholder="Search"
+                     @input="filterUsuarios">
               <template v-slot:append>
                 <q-icon name="search"/>
               </template>
@@ -31,34 +47,43 @@
           </template>
         </q-table>
       </div>
-      <div class="col-3  q-pa-sm flex justify-center">
-        <q-card class="fixed " >
+      <div class="col-3  q-pa-sm flex justify-center" v-if="$q.screen.gt.md">
+        <q-card class="fixed">
           <q-card-section>
             <div class="text-h6">
               Selecciones comunes
             </div>
           </q-card-section>
-          <q-separator inset="" />
-          <q-card-section class="column">
-          <q-btn label="Igual que la semana pasada" class="q-ma-sm"/>
-          <q-btn label="Selección igual que ayer" class="q-ma-sm"/>
+          <q-separator inset=""/>
+          <q-card-section class="column q-py-lg">
+            <q-btn label="Igual que la semana pasada" class="q-ma-sm" color="black" outline
+                   @click="seleccionarSemanaPasada">
+              <q-tooltip :delay="500" anchor="top middle" self="bottom middle" :offset="[0,3]"
+                         content-class="bg-secondary" content-style="font-size: 0.7em">
+                Seleccionar los mismos usuarios que el mismo dia de la semana pasada
+              </q-tooltip>
+            </q-btn>
+            <q-btn label="Selección igual que ayer" class="q-ma-sm" color="black" outline @click="seleccionarDiaPasado">
+              <q-tooltip :delay="500" anchor="top middle" self="bottom middle" :offset="[0,3]"
+                         content-class="bg-secondary" content-style="font-size: 0.7em">
+                Seleccionar los mismos usuarios que ayer
+              </q-tooltip>
+            </q-btn>
 
           </q-card-section>
-          <q-separator inset="" />
+          <q-separator inset=""/>
           <q-card-actions align="right">
-            <q-btn label="Guardar"/>
+            <q-btn color="primary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
           </q-card-actions>
         </q-card>
       </div>
     </div>
 
 
-    <q-page-sticky position="bottom-right" :offset="fabPos">
-      <q-btn  :disable="draggingFab"
-              v-touch-pan.prevent.mouse="moveFab" label="Guardar"
-      color="green-10" text-color="white"/>
-
+    <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="$q.screen.lt.lg">
+      <q-btn color="secondary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
     </q-page-sticky>
+
   </q-page>
 </template>
 
@@ -67,15 +92,19 @@
   export default {
     name: "PagesLlista",
     created() {
+      /*
+      * TODO RECUPERAR AQUI TODOS LOS USUARIOS QUE NECESITEMOS
+      * */
+
       this.usuariosFiltrados = this.usuariosSinFiltrar;
     },
     data() {
       return {
-        fabPos: [ 18, 18 ],
+        fabPos: [18, 18],
         draggingFab: false,
         optionsTipoUsuario: ['Todos', 'Professor', 'Alumne'],
         tipoUsuarioSeleccionado: 'Todos',
-        selected: [],
+        usuariosSeleccionados: [],
         filtroDeUsuarios: '',
         search: {
           nom: null,
@@ -122,6 +151,10 @@
             sortable: true
           }
         ],
+
+        /*
+        * TODO ESTOS USUARIOS HAN DE VENIR DE BBDD
+        * */
         usuariosSinFiltrar: [
           {
             codi: 2131223,
@@ -286,31 +319,45 @@
         console.log(evt, row);
       },
       getSelectedString() {
-        return this.selected.length === 0
+        return this.usuariosSeleccionados.length === 0
           ? ""
-          : `${this.selected.length} record${
-            this.selected.length > 1 ? "s" : ""
+          : `${this.usuariosSeleccionados.length} record${
+            this.usuariosSeleccionados.length > 1 ? "s" : ""
           } selected of ${this.usuariosSinFiltrar.length}`;
       },
       filterUsuarios() {
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
         this.usuariosFiltrados = this.usuariosSinFiltrar.filter(user => {
+          const nombreCompleto = user.nom + ' ' + user.ap1 + ' ' + user.ap2
 
           if (this.tipoUsuarioSeleccionado.toLowerCase() !== 'todos' && this.tipoUsuarioSeleccionado.toLowerCase() !== user.rol.toLowerCase()) return false
-          if (user.nom.toLowerCase().includes(textoFiltro)) return true;
-          if (user.ap1.toLowerCase().includes(textoFiltro)) return true;
-          if (user.ap2.toLowerCase().includes(textoFiltro)) return true;
+          return nombreCompleto.toLowerCase().includes(textoFiltro);
 
-          return false
         })
       },
-      moveFab (ev) {
-        this.draggingFab = ev.isFirst !== true && ev.isFinal !== true
+      async guardarListado() {
+        console.log(this.usuariosSeleccionados)
 
-        this.fabPos = [
-          this.fabPos[0] - ev.delta.x,
-          this.fabPos[1] - ev.delta.y
-        ]
+        this.notify("Usuarios marcados correctamente")
+      },
+      async seleccionarSemanaPasada() {
+        /*
+        * TODO: hacer peticion al back
+        * */
+        this.notify("Usuarios del mismo día de la semana pasada seleccionados")
+      },
+      async seleccionarDiaPasado() {
+        /*
+        * TODO: hacer peticion al back
+        * */
+        this.notify("Usuarios que ayer tambien estuvieron seleccionados")
+      },
+      notify(message) {
+        this.$q.notify({
+          message: message,
+          color: 'secondary',
+          position: 'bottom-left'
+        })
       }
     }
   };
