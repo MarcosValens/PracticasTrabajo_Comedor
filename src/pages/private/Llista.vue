@@ -3,7 +3,8 @@
 
     <div class="flex justify-between q-pa-sm">
       <div class="text-h4 ">Pasar llista</div>
-      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" label="Selecciones comunes" icon="fas fa-angle-down">
+      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Selecciones comunes"
+             icon="fas fa-angle-down">
         <q-menu fit>
           <q-list style="min-width: 100px">
             <q-item clickable @click="seleccionarSemanaPasada">
@@ -32,19 +33,23 @@
           :rows-per-page-options="[5,12,0]"
           separator="cell"
         >
-          <template v-slot:top-right>
-            <q-input outlined dense debounce="300" v-model="filtroDeUsuarios" placeholder="Search"
-                     @input="filterUsuarios">
-              <template v-slot:append>
-                <q-icon name="search"/>
-              </template>
-            </q-input>
+          <template v-slot:top class="bg-indigo">
+            <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+              <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
+                        v-model="tipoUsuarioSeleccionado"
+                        :options="optionsTipoUsuario" label="Tipo de usuario"
+                        @input="filterUsuarios(filtroDeUsuarios)"/>
+
+              <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
+                       v-model="filtroDeUsuarios" placeholder="Search"
+                       @input="filterUsuarios">
+                <template v-slot:append>
+                  <q-icon name="search"/>
+                </template>
+              </q-input>
+            </div>
           </template>
 
-          <template v-slot:top-left>
-            <q-select dense style="min-width: 200px" outlined v-model="tipoUsuarioSeleccionado"
-                      :options="optionsTipoUsuario" label="Tipo de usuario" @input="filterUsuarios(filtroDeUsuarios)"/>
-          </template>
         </q-table>
       </div>
       <div class="col-3  q-pa-sm flex justify-center" v-if="$q.screen.gt.md">
