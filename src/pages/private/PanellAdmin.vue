@@ -82,7 +82,7 @@
     async created() {
 
       this.$q.loading.show()
-      const response = await this.$axiosCore.get('/profesores');
+      const response = await this.$axiosCore.get('/private/profesores');
       if (response.status == 200) {
         this.dataUsers = response.data;
       }else{

@@ -19,17 +19,17 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer 
-    v-model="drawer"
-    show-if-above 
-    bordered
-    :mini="!drawer || miniState"
-    content-class="bg-grey-2"
+    <q-drawer
+      v-model="drawer"
+      show-if-above
+      bordered
+      :mini="!drawer || miniState"
+      content-class="bg-grey-2"
     >
       <q-list>
-        <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link" >
-          <q-item-section avatar >
-            <q-icon :name="link.icon" />
+        <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link">
+          <q-item-section avatar>
+            <q-icon :name="link.icon"/>
           </q-item-section>
           <q-item-section>
             <q-item-label lines="1" style="font-size: 1.2em">{{link.title}}</q-item-label>
@@ -68,7 +68,7 @@ export default {
         {
           title: "Inici",
           icon: "home",
-          link: "/"
+          link: "/inici"
         },
         {
           title: "Alumnes",
