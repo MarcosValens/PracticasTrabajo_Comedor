@@ -40,12 +40,13 @@
           </q-card-section>
           <q-separator inset="" />
           <q-card-section class="column">
-          <q-btn label="Selección igual que la semana pasada" class="q-ma-sm"/>
+          <q-btn label="Igual que la semana pasada" class="q-ma-sm"/>
           <q-btn label="Selección igual que ayer" class="q-ma-sm"/>
 
           </q-card-section>
+          <q-separator inset="" />
           <q-card-actions align="right">
-            <q-btn   label="Guardar"/>
+            <q-btn label="Guardar"/>
           </q-card-actions>
         </q-card>
       </div>
