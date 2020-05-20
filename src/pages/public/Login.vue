@@ -58,7 +58,9 @@
     },
     methods: {
       async doLogin(){
-        const responseLogin = await this.$axiosCore.post('/login'); // TODO PONER EL PATH DEL LOGIN
+        const responseLogin = await this.$axiosCore.post('/auth/login',{
+          prueba:"Prueba"
+        });// TODO PONER EL PATH DEL LOGIN
         if (responseLogin.status===200){
           // Ok, guardamos tokens y a parte privada
           const access = responseLogin.data.access_token;
