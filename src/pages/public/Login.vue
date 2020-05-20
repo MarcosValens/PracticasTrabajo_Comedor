@@ -23,7 +23,17 @@
             </q-input>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn unelevated color="primary" size="lg" class="full-width" label="Login"  @click="doLogin"/>
+            <q-btn unelevated color="primary" size="md" class="full-width" label="Login" @click="doLogin"/>
+            <a :href="urlLoginOauth" class="full-width q-mt-sm" style="text-decoration: none">
+              <q-btn outline unelevated color="red-8" size="md" class="full-width">
+                <q-avatar size="18px">
+                  <q-img :src="require('./assets/G-logo.png')"/>
+                </q-avatar>
+                <div class="q-pl-md">
+                  Login con google
+                </div>
+              </q-btn>
+            </a>
           </q-card-actions>
 
         </q-card>
@@ -38,7 +48,8 @@
     name: 'Login',
     data () {
       return {
-        login:{
+        urlLoginOauth: process.env.CORE_URL + process.env.URI_OAUTH_GOOGLE,
+        login: {
           email: '',
           password: '',
         },
