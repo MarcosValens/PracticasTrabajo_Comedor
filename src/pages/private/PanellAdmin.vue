@@ -1,26 +1,26 @@
 <template>
   <q-page class="q-pa-xl">
 
-    <div class="row flex justify-between q-pa-sm">
+    <div :class="$q.screen.gt.md?'full-width flex justify-between q-px-sm':'full-width q-px-sm'">
+      <div>
+        <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualizar CORE via XML"
+               icon="far fa-file-excel" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
+      </div>
       <q-input outlined dense debounce="300" placeholder="Search" @input="filterProfesor" v-model="filtroProfesor">
         <template v-slot:prepend>
           <q-icon name="search"/>
         </template>
       </q-input>
-      <div>
-        <q-btn color="primary" unelevated label="Otra accion posible"
-               class="q-mx-xs"/>
-        <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualizar datos CORE via XML"
-               icon="far fa-file-excel" class="q-mx-xs"/>
-      </div>
     </div>
+
     <div class="row  q-mt-sm q-pa-sm">
       <q-table
         class="full-width" :data="dataProfesoresFiltered" :columns="columns" row-key="name" separator="cell"
         :pagination="{
-          rowsPerPage: 12
+          rowsPerPage: 10
         }" :rows-per-page-options="[0,12,15]"
       >
+
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="username" :props="props">{{props.row.username}}</q-td>
