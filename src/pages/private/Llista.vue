@@ -86,7 +86,7 @@
 
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="$q.screen.lt.lg">
-      <q-btn color="secondary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
+      <q-btn fab-mini color="secondary" icon="far fa-save" @click="guardarListado"/>
     </q-page-sticky>
 
   </q-page>
