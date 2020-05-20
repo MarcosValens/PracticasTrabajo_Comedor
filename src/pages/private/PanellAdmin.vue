@@ -27,12 +27,17 @@
             <q-td key="nom" :props="props">{{props.row.nom}}</q-td>
             <q-td key="apellido" :props="props">{{props.row.ap1}}</q-td>
             <q-td key="apellido2" :props="props">{{props.row.ap2}}</q-td>
-            <q-td key="email" :props="props">
-              {{props.row.email}}
-              <q-popup-edit v-model="props.row.email" label-set="Asignar email" label-cancel="Cancelar" buttons
-                            @save="asignarEmail(props.row)">
-                <q-input outlined label="email" v-model="props.row.email" dense autofocus/>
-              </q-popup-edit>
+            <q-td key="email" :props="props" style="max-width: 200px">
+              <q-input v-model="props.row.email" outlined label="Asignar email" class="full-width">
+                <template v-slot:append>
+                  <q-btn class="q-mx-xs" round size="sm" color="green-9" icon="fas fa-save"
+                         @click="asignarEmail((props.row))"
+                         :disable="props.row.email!==undefined && props.row.email!==''"/>
+                  <q-btn outline class="q-mx-xs" round size="sm" color="red-9" icon="far fa-trash-alt"
+                         @click="props.row.email=undefined"
+                         :disable="props.row.email!==undefined && props.row.email!==''"/>
+                </template>
+              </q-input>
             </q-td>
           </q-tr>
         </template>
@@ -118,7 +123,7 @@
 
         ],
         dataProfesores: [],
-        dataProfesoresFiltered: null
+        dataProfesoresFiltered: []
       }
     },
     methods: {
@@ -153,6 +158,7 @@
         })
       },
       async asignarEmail(profesor) {
+        console.log(profesor)
         const codigo = profesor.codi;
         const email = profesor.email;
         if (codigo && email) {
