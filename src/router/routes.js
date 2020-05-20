@@ -23,7 +23,8 @@ const routes = [
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { path: '', component: () => import('pages/public/Login.vue') },
-      { path: 'oatuh/calback',
+      {
+        path: 'oatuh/callback',
         beforeEnter: (to, from, next) => {
           const url = new URL(location);
           const accessToken = url.searchParams.get('access_token');
