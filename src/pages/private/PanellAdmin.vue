@@ -102,6 +102,8 @@
         uploadXML: false,
         uploadingXml: false,
         columns: [
+          {name: 'username', align: 'center', label: 'Username', field: row => row.username, sortable: true},
+
           {
             name: 'nom',
             required: true,
@@ -112,7 +114,6 @@
           },
           {name: 'apellido', align: 'left', label: 'Apellido', field: row => row.ap1, sortable: true},
           {name: 'apellido2', align: 'left', label: 'Segundo apellido', field: row => row.ap2, sortable: true},
-          {name: 'username', align: 'center', label: 'Username', field: row => row.username, sortable: true},
           {name: 'email', align: 'center', label: 'Email', field: row => row.email, sortable: true},
 
         ],
