@@ -27,7 +27,7 @@
             <a :href="urlLoginOauth" class="full-width q-mt-sm" style="text-decoration: none">
               <q-btn outline unelevated color="red-8" size="md" class="full-width">
                 <q-avatar size="18px">
-                  <q-img :src="require('./assets/G-logo.png')"/>
+                  <q-img ratio="1" :src="require('./assets/G-logo.png')"/>
                 </q-avatar>
                 <div class="q-pl-md">
                   Login con google
@@ -57,16 +57,16 @@
       }
     },
     methods: {
-      async doLogin(){
-        const responseLogin = await this.$axiosCore.post('/login'); // TODO PONER EL PATH DEL LOGIN
-        if (responseLogin.status===200){
+      async doLogin() {
+        const responseLogin = await this.$axiosCore.post('/auth/login', this.login); // TODO PONER EL PATH DEL LOGIN + ASEGURARNOS DE MANDAR LO CORRECTO UNA VEZ FUNCIONE EN BACK
+        if (responseLogin.status === 200) {
           // Ok, guardamos tokens y a parte privada
           const access = responseLogin.data.access_token;
           const refresh = responseLogin.data.refresh_token;
-
+          console.log(responseLogin)
           localStorage.setItem("access_token", access)
           localStorage.setItem("refresh_token", refresh)
-        }else {
+        } else {
           // No ok
           this.notify('Email o contraseña incorrecto')
         }
