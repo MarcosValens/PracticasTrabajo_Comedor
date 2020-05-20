@@ -66,6 +66,7 @@
           console.log(responseLogin)
           localStorage.setItem("access_token", access)
           localStorage.setItem("refresh_token", refresh)
+          this.$router.push("/")
         } else {
           // No ok
           this.notify('Email o contraseña incorrecto')
