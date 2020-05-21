@@ -60,7 +60,7 @@
             <q-item-section avatar>
               <q-icon :name="link.icon"/>
             </q-item-section>
-            <q-tooltip delay="300"
+            <q-tooltip :delay="300"
                        transition-hide="slide-left" anchor="center right" self="center left">
               {{link.title}}
             </q-tooltip>
@@ -100,38 +100,38 @@
           {
             title: "Inici",
             icon: "home",
-            link: "/inici"
+            link: "/private/inici"
           },
           {
             title: "Alumnes",
             icon: "school",
-            link: "/alumnes",
+            link: "/private/alumnes",
             grantedRoles: []
           },
           {
             title: "Professors",
             icon: "people",
-            link: "/professors"
+            link: "/private/professors"
           },
           {
             title: "Dies",
             icon: "wb_sunny",
-            link: "/dies"
+            link: "/private/dies"
           },
           {
             title: "Usuaris",
             icon: "account_circle",
-            link: "/usuaris"
+            link: "/private/usuaris"
           },
           {
             title: "Pasar llista",
             icon: "list_alt",
-            link: "/llista"
+            link: "/private/llista"
           },
           {
             title: "Panell d'administració",
             icon: "fas fa-crown",
-            link: "/admin"
+            link: "/admin/panel"
           }
         ],
         drawer: false,
