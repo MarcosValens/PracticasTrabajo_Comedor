@@ -53,6 +53,32 @@
           <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconectarse" @click="disconnect"/>
         </div>
       </div>
+
+      <template v-slot:mini>
+        <q-list class="">
+          <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link">
+            <q-item-section avatar>
+              <q-icon :name="link.icon"/>
+            </q-item-section>
+            <q-tooltip delay="300"
+                       transition-hide="slide-left" anchor="center right" self="center left">
+              {{link.title}}
+            </q-tooltip>
+          </q-item>
+        </q-list>
+
+        <div>
+          <q-separator class="q-mb-md"/>
+          <div class="flex flex-center q-mb-md">
+            <q-btn dense color="secondary" outline icon-right="exit_to_app" @click="disconnect">
+              <q-tooltip
+                transition-hide="slide-left" content-class="bg-secondary" anchor="center right" self="center left">
+                Desconectarse
+              </q-tooltip>
+            </q-btn>
+          </div>
+        </div>
+      </template>
     </q-drawer>
 
     <q-page-container>
