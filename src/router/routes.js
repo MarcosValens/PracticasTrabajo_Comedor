@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/',
+    path: '/private',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {path: "", redirect: 'inici'},
@@ -15,17 +15,56 @@ const routes = [
       {path: 'dia/:id', component: () => import('pages/private/Dia.vue')},
       {path: 'professor/:id', component: () => import('pages/private/Professor.vue')},
       {path: 'usuari/:id', component: () => import('pages/private/Usuari.vue')},
-      { path: 'admin', component: () => import('pages/private/PanellAdmin.vue') },
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem('access_token');
+      // TODO MODIFICAR ESTO CUANDO HAYA ROLES
+      // const rol = localStorage.getItem('rol');
+      // if (!rol) {
+      //   next('/login');
+      // }
+
+      if (!token) {
+        next('/login');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/admin',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {path: "", redirect: 'panel'},
+      {path: 'panel', component: () => import('pages/private/PanellAdmin.vue')},
+    ],
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem('access_token');
+
+      // TODO MODIFICAR ESTO CUANDO HAYA ROLES
+      // const rol = localStorage.getItem('rol');
+      // if (!rol) {
+      //   next('/login');
+      // }
+
+      //if (!token || rol.toLowerCase() !== process.env.ADMIN_ROL.toLowerCase()){
+      if (!token) {
+        next('/login');
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/login',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/public/Login.vue') },
+      {path: '', component: () => import('pages/public/Login.vue')},
       {
         path: 'oauth/callback',
         beforeEnter: (to, from, next) => {
+          console.log("HOLAAAA")
+
           const url = new URL(location);
           const accessToken = url.searchParams.get('access_token');
           const refreshToken = url.searchParams.get('refresh_token');
@@ -44,7 +83,7 @@ const routes = [
           * Limpiar url de params
           * */
           window.history.pushState({}, document.title, "/");
-          next('/inici');
+          next('/private/inici');
         }
       },
     ]
