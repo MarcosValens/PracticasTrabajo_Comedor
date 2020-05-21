@@ -38,7 +38,9 @@
               <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
                         v-model="tipoUsuarioSeleccionado"
                         :options="optionsTipoUsuario" label="Tipo de usuario"
-                        @input="filterUsuarios(filtroDeUsuarios)"/>
+                        @input="filterUsuarios(filtroDeUsuarios)"
+                        :disable="soloPuedeFicharAlumnos"
+              />
 
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
                        v-model="filtroDeUsuarios" placeholder="Search"
@@ -86,7 +88,7 @@
 
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="$q.screen.lt.lg">
-      <q-btn color="secondary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
+      <q-btn fab-mini color="secondary" icon="far fa-save" @click="guardarListado"/>
     </q-page-sticky>
 
   </q-page>
@@ -102,22 +104,30 @@
       * */
 
       this.usuariosFiltrados = this.usuariosSinFiltrar;
+
+      /*
+      * TODO: QUE ESTO VENGA DEL LOCALSTORAGE UNA VEZ LOS ROLES EN EL LOGUIN ESTEN IMPLEMENTADOS
+      * */
+      this.rolLogued = this.cuinerRol
+      if (this.rolLogued === this.monitorRol) {
+        this.tipoUsuarioSeleccionado = 'Alumne'
+        this.soloPuedeFicharAlumnos = this.rolLogued === this.monitorRol;
+        this.filterUsuarios(this.filtroDeUsuarios)
+      }
+
     },
     data() {
       return {
+        rolLogued: '',
+        cuinerRol: process.env.CUINER_ROl,
+        monitorRol: process.env.MONITOR_ROL,
+        soloPuedeFicharAlumnos: false,
         fabPos: [18, 18],
         draggingFab: false,
         optionsTipoUsuario: ['Todos', 'Professor', 'Alumne'],
         tipoUsuarioSeleccionado: 'Todos',
         usuariosSeleccionados: [],
         filtroDeUsuarios: '',
-        search: {
-          nom: null,
-          cognoms: {
-            primer: null,
-            segon: null
-          }
-        },
         columns: [
           {
             name: "nom",
@@ -273,62 +283,18 @@
             ap2: "Doe",
             rol: "Alumne"
           },
-          {
-            codi: 10183223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10131223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10132223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10133223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10143223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 1013253,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          }
         ],
         usuariosFiltrados: null
       };
     },
     methods: {
       rowclick: function (evt, row) {
-        console.log(evt, row);
       },
       getSelectedString() {
+        const addS = this.usuariosSeleccionados.length > 1 ? "s" : "";
         return this.usuariosSeleccionados.length === 0
           ? ""
-          : `${this.usuariosSeleccionados.length} record${
-            this.usuariosSeleccionados.length > 1 ? "s" : ""
-          } selected of ${this.usuariosSinFiltrar.length}`;
+          : `${this.usuariosSeleccionados.length} usuario${addS} seleccionado${addS} de ${this.usuariosSinFiltrar.length}`;
       },
       filterUsuarios() {
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
@@ -341,9 +307,14 @@
         })
       },
       async guardarListado() {
-        console.log(this.usuariosSeleccionados)
+        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
+        if (response.status === 200) {
+          this.notify("Usuarios marcados correctamente")
+          this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
+        } else {
+          this.notify("Ha habido un error" + response.data)
+        }
 
-        this.notify("Usuarios marcados correctamente")
       },
       async seleccionarSemanaPasada() {
         /*
