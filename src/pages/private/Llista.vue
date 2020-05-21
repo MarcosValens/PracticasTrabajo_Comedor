@@ -293,9 +293,11 @@
       getSelectedString() {
         return this.usuariosSeleccionados.length === 0
           ? ""
-          : `${this.usuariosSeleccionados.length} record${
+          : `${this.usuariosSeleccionados.length} usuario${
             this.usuariosSeleccionados.length > 1 ? "s" : ""
-          } selected of ${this.usuariosSinFiltrar.length}`;
+          } seleccionado${
+            this.usuariosSeleccionados.length > 1 ? "s" : ""
+          } de ${this.usuariosSinFiltrar.length}`;
       },
       filterUsuarios() {
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
