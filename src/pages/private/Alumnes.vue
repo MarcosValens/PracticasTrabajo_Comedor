@@ -89,7 +89,7 @@ export default {
   },
   methods: {
       onRowClick: function (evt, row) {
-          this.$router.push(`/alumne/${row.codi}`)
+          this.$router.push(`alumne/${row.codi}`)
       },
       filterAlumnes(){
         this.alumnesFiltered = this.alumnes.filter(alumne => alumne.nom.includes(this.filter.nom) && alumne.ap1.includes(this.filter.ap1) && alumne.ap2.includes(this.filter.ap2))
