@@ -289,7 +289,6 @@
     },
     methods: {
       rowclick: function (evt, row) {
-        console.log(evt, row);
       },
       getSelectedString() {
         return this.usuariosSeleccionados.length === 0
