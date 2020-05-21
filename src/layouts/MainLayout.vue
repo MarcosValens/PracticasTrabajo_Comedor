@@ -60,8 +60,8 @@
             <q-item-section avatar>
               <q-icon :name="link.icon"/>
             </q-item-section>
-            <q-tooltip
-              transition-hide="slide-left" anchor="center right" self="center left">
+            <q-tooltip delay="300"
+                       transition-hide="slide-left" anchor="center right" self="center left">
               {{link.title}}
             </q-tooltip>
           </q-item>
