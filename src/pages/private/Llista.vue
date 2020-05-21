@@ -291,13 +291,10 @@
       rowclick: function (evt, row) {
       },
       getSelectedString() {
+        const addS = this.usuariosSeleccionados.length > 1 ? "s" : "";
         return this.usuariosSeleccionados.length === 0
           ? ""
-          : `${this.usuariosSeleccionados.length} usuario${
-            this.usuariosSeleccionados.length > 1 ? "s" : ""
-          } seleccionado${
-            this.usuariosSeleccionados.length > 1 ? "s" : ""
-          } de ${this.usuariosSinFiltrar.length}`;
+          : `${this.usuariosSeleccionados.length} usuario${addS} seleccionado${addS} de ${this.usuariosSinFiltrar.length}`;
       },
       filterUsuarios() {
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
