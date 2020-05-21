@@ -32,10 +32,12 @@
                 <template v-slot:append>
                   <q-btn class="q-mx-xs" round size="sm" color="green-9" icon="fas fa-save"
                          @click="asignarEmail((props.row))"
-                         :disable="props.row.email!==undefined && props.row.email!==''"/>
+                         :disable="!(props.row.email!==undefined && props.row.email!=='')"
+                         v-show="(props.row.email!==undefined && props.row.email!=='')"/>
                   <q-btn outline class="q-mx-xs" round size="sm" color="red-9" icon="far fa-trash-alt"
-                         @click="props.row.email=undefined"
-                         :disable="props.row.email!==undefined && props.row.email!==''"/>
+                         @click="removeEmailUser(props.row)"
+                         :disable="!(props.row.email!==undefined && props.row.email!=='')"
+                         v-show="(props.row.email!==undefined && props.row.email!=='')"/>
                 </template>
               </q-input>
             </q-td>
@@ -158,7 +160,6 @@
         })
       },
       async asignarEmail(profesor) {
-        console.log(profesor)
         const codigo = profesor.codi;
         const email = profesor.email;
         if (codigo && email) {
@@ -174,6 +175,24 @@
             this.notify(response.data);
           }
 
+        }
+      },
+      async removeEmailUser(profesor) {
+        const codigo = profesor.codi;
+
+        // Aqui hacemos que el email no se vea mas en la lista
+        profesor.email = undefined
+
+        const response = await this.$axiosCore.delete('/admin/professor/email', {
+          data: {
+            codi: codigo
+          }
+        })
+
+        if (response.status === 200) {
+          this.notify("Email eliminado correctamente")
+        } else {
+          this.notify(response.data);
         }
       }
     }
