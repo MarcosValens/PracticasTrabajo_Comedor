@@ -63,10 +63,13 @@
           // Ok, guardamos tokens y a parte privada
           const access = responseLogin.data.access_token;
           const refresh = responseLogin.data.refresh_token;
-          console.log(responseLogin)
+          const rol = responseLogin.data.rol;
+
           localStorage.setItem("access_token", access)
           localStorage.setItem("refresh_token", refresh)
-          this.$router.push("/")
+          localStorage.setItem('rol', rol);
+
+          await this.$router.push("/")
         } else {
           // No ok
           this.notify('Email o contraseña incorrecto')
