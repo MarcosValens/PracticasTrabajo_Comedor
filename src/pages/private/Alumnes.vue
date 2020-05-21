@@ -48,7 +48,7 @@ export default {
         ap1: alumno.ap1,
         ap2: alumno.ap2,
         grup: "",
-        codi: alumno.codi
+        codi: alumno.codi,
       }
       let grupo;
       if(alumno.grup != null && typeof alumno.grup === 'object'){
@@ -60,7 +60,6 @@ export default {
       return newAlumno;
     });
     this.alumnesFiltered = this.alumnes;
-    console.log(this.alumnes);
      const responseGrups = await this.$axiosCore.get( "/private/grupos");
      this.grups = responseGrups.data.map(grup => {
        return grup.curs.descripcio +"-"+grup.nom;
