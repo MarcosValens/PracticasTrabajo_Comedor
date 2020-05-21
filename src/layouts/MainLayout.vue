@@ -24,7 +24,7 @@
       show-if-above
       bordered
       :mini="!drawer || miniState"
-      content-class="bg-grey-2"
+      content-class="bg-grey-2 column justify-between"
     >
       <q-list>
         <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link">
@@ -37,15 +37,22 @@
         </q-item>
       </q-list>
       <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
-          <q-btn
-            dense
-            round
-            unelevated
-            color = primary
-            icon="chevron_left"
-            @click="miniState = true"
-          ></q-btn>
+        <q-btn
+          dense
+          round
+          unelevated
+          color=primary
+          icon="chevron_left"
+          @click="miniState = true"
+        ></q-btn>
+      </div>
+
+      <div class="q-pa-md">
+        <q-separator class="q-mb-md"/>
+        <div class="flex justify-end">
+          <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconectarse"/>
         </div>
+      </div>
     </q-drawer>
 
     <q-page-container>
