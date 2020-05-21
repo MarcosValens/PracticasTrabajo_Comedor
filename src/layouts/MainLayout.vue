@@ -50,84 +50,88 @@
       <div class="q-pa-md">
         <q-separator class="q-mb-md"/>
         <div class="flex justify-end">
-          <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconectarse"/>
+          <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconectarse" @click="disconnect"/>
         </div>
       </div>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 
-export default {
-  name: "MainLayout",
+  export default {
+    name: "MainLayout",
 
-  components: {
-  },
+    components: {},
 
-  data() {
-    return {
-      links: [
-        {
-          title: "Inici",
-          icon: "home",
-          link: "/inici"
-        },
-        {
-          title: "Alumnes",
-          icon: "school",
-          link: "/alumnes",
-          grantedRoles: [
-          ]
-        },
-        {
-          title: "Professors",
-          icon: "people",
-          link: "/professors"
-        },
-        {
-          title: "Dies",
-          icon: "wb_sunny",
-          link: "/dies"
-        },
-        {
-          title: "Usuaris",
-          icon: "account_circle",
-          link: "/usuaris"
-        },
-        {
-          title: "Pasar llista",
-          icon: "list_alt",
-          link: "/llista"
-        },
-        {
-          title: "Panell d'administració",
-          icon: "fas fa-crown",
-          link: "/admin"
+    data() {
+      return {
+        links: [
+          {
+            title: "Inici",
+            icon: "home",
+            link: "/inici"
+          },
+          {
+            title: "Alumnes",
+            icon: "school",
+            link: "/alumnes",
+            grantedRoles: []
+          },
+          {
+            title: "Professors",
+            icon: "people",
+            link: "/professors"
+          },
+          {
+            title: "Dies",
+            icon: "wb_sunny",
+            link: "/dies"
+          },
+          {
+            title: "Usuaris",
+            icon: "account_circle",
+            link: "/usuaris"
+          },
+          {
+            title: "Pasar llista",
+            icon: "list_alt",
+            link: "/llista"
+          },
+          {
+            title: "Panell d'administració",
+            icon: "fas fa-crown",
+            link: "/admin"
+          }
+        ],
+        drawer: false,
+        miniState: false,
+        rol: ''
+      };
+    },
+    methods: {
+      drawerClick(e) {
+        if (this.miniState) {
+          this.miniState = false;
+          e.stopPropagation();
         }
-      ],
-      drawer: false,
-      miniState: false,
-      rol: ''
-    };
-  },
-  methods: {
-    drawerClick (e) {
-      if (this.miniState) {
-        this.miniState = false;
-        e.stopPropagation();
+      },
+      disconnect() {
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+        localStorage.removeItem("rol")
+        this.$router.push("/login")
       }
+    },
+    created() {
+      //this.rol = localStorage.getItem('rol').toLowerCase();
     }
-  },
-  created() {
-    //this.rol = localStorage.getItem('rol').toLowerCase();
-  }
-};
+  };
 </script>
-<style >
+<style>
 
 </style>>
