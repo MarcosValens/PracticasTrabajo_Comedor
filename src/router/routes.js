@@ -24,7 +24,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/public/Login.vue') },
       {
-        path: 'oatuh/callback',
+        path: 'oauth/callback',
         beforeEnter: (to, from, next) => {
           const url = new URL(location);
           const accessToken = url.searchParams.get('access_token');
