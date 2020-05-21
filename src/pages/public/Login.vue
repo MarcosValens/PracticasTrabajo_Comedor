@@ -58,7 +58,7 @@
     },
     methods: {
       async doLogin(){
-        const responseLogin = await this.$axiosCore.post('/login'); // TODO PONER EL PATH DEL LOGIN
+        const responseLogin = await this.$axiosCore.post('/auth/login',this.login); // TODO PONER EL PATH DEL LOGIN
         if (responseLogin.status===200){
           // Ok, guardamos tokens y a parte privada
           const access = responseLogin.data.access_token;
@@ -66,6 +66,7 @@
 
           localStorage.setItem("access_token", access)
           localStorage.setItem("refresh_token", refresh)
+          this.$router.push('/')
         }else {
           // No ok
           this.notify('Email o contraseña incorrecto')

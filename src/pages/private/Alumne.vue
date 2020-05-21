@@ -1,48 +1,19 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
-    <q-card class="my-card">
-      <q-list>
-        <q-item>
-          <q-item-section>
-            <q-item-label caption>Nom</q-item-label>
-            <q-item-label>{{alumne.nom}}</q-item-label>
-          </q-item-section>
-        </q-item>
+  <q-page>
+    {{alumne.nom}}
+    {{alumne.ap1}}
+    {{alumne.ap2}}
 
-        <q-item>
-          <q-item-section>
-            <q-item-label caption>Cognoms</q-item-label>
-            <q-item-label>{{alumne.ap1 + " " +alumne.ap2}}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item>
-          <q-item-section>
-            <q-item-label caption>Tutor legal</q-item-label>
-            <q-item-label>{{alumne.tutorLegal.nom + " " +alumne.tutorLegal.ap1+" "+alumne.tutorLegal.ap2}}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-card>
-    <q-list>
-      <q-date
-        v-model="date"
-        :locale="myLocale"
-        :events="alumne.diesUsantMenjador"
-      />
-      <q-item-label><p class="text-h7">Els dies marcats, son els dies que l'alumne ha usat el menjador</p></q-item-label>
-    </q-list>
-
-  </div>
+  </q-page>
 </template>
 <script>
     export default {
         data() {
             return {
                 alumne: {
-                    nom: "Miguel",
-                    ap1: "Pons",
-                    ap2: "Sanchez",
+                    nom: '',
+                    ap1: '',
+                    ap2: '',
                     tutorLegal: {
                         nom: "Pepito",
                         ap1: "De Los",
@@ -60,7 +31,10 @@
                 }
             }
         },
-        created() {
+        async created() {
+            const responseAlumne = await this.$axiosCore.get("/private/alumno/"+this.$route.params.id)
+            this.alumne = responseAlumne.data;
+            console.log(this.alumne);
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
             let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
