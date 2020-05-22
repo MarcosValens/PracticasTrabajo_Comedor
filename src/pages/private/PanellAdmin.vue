@@ -1,39 +1,102 @@
 <template>
-  <q-page :class="$q.screen.gt.sm?'q-pa-xl':'q-pa-xs q-pt-md'">
+  <q-page :class="$q.screen.gt.sm?'q-pa-xl bg-grey-2  flex flex-center':'q-pa-xs bg-grey-2'">
 
-    <div :class="$q.screen.gt.md?'full-width flex justify-between q-px-sm':'full-width q-px-sm'">
-      <div v-if="$q.screen.gt.md">
-        <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualitzar CORE via XML"
-               icon="far fa-file-excel" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
 
-        <q-btn color="primary" outline unelevated label="Afegir usuari" @click="dialogAfegisUsuari=true"
-               icon="add" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
+    <div class="row   q-pa-sm ">
+      <div class="col-6 flex justify-end ">
+        <div class="colum">
+          <q-btn
+
+            color="primary"
+            @click="uploadXML=!uploadXML"
+
+            style="height: 200px; width: 300px; "
+            class="q-ma-sm "
+          >
+            <div class="text-h5">
+              <q-icon name="far fa-file-excel"/>
+
+              ACTUALIZAR CORE VIA XML
+            </div>
+          </q-btn>
+          <div>
+            <q-btn
+              color="white"
+              text-color="black"
+              to="/private/professors"
+
+              style="height: 230px; width: 300px; "
+              class="q-ma-sm "
+            >
+              <div class="text-h5 column">
+                <div class="q-mb-md">
+                  PROFESSORS DINS L'APP
+                </div>
+
+                <div v-if="numeroDeProfesoresApp===null">
+                  <q-spinner
+                    color="white"
+                    size="1.5"
+                    :thickness="2"
+                  />
+                </div>
+                <div v-if="numeroDeProfesoresApp!==null">
+
+                  {{numeroDeProfesoresApp}}
+                </div>
+              </div>
+            </q-btn>
+          </div>
+
+        </div>
+
       </div>
-      <div v-if="!$q.screen.gt.md">
-        <q-btn label="acciones" unelevated color="primary" icon-right="keyboard_arrow_down" class="full-width q-mb-md">
-          <q-menu fit>
-            <q-list style="min-width: 100px">
-              <q-item clickable v-close-popup @click="uploadXML=!uploadXML">
-                <q-item-section avatar>
-                  <q-icon name="far fa-file-excel"/>
-                </q-item-section>
-                <q-item-section class="">ACTUALITZAR CORE VIA XML</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup @click="dialogAfegisUsuari=true">
-                <q-item-section avatar>
-                  <q-icon name="add"/>
-                </q-item-section>
-                <q-item-section>AFEGIR USUARI</q-item-section>
-              </q-item>
+      <div class="col-6 flex ">
+        <div class="colum">
+          <q-btn
+            color="white"
+            text-color="black"
+            @click="dialogAfegisUsuari=true"
 
-            </q-list>
-          </q-menu>
-        </q-btn>
+            style="height: 300px; width: 300px; "
+            class="q-ma-sm  "
+          >
+            <div class="text-h5">
+              <q-icon name="far fa-plus-square"/>
+
+              AFEGIR USUARIS A L'APP
+            </div>
+          </q-btn>
+          <div>
+            <q-btn
+              color="primary"
+              to="/private/usuaris"
+
+              style="height: 130px; width: 300px; "
+              class="q-ma-sm "
+            >
+              <div class="text-h5 column">
+                <div class="q-mb-md">
+                  USUARIS DINS L'APP
+                </div>
+
+                <div v-if="numeroDeProfesoresApp===null">
+                  <q-spinner
+                    color="white"
+                    size="1.5"
+                    :thickness="2"
+                  />
+                </div>
+                <div v-if="numeroDeProfesoresApp!==null">
+
+                  {{numeroUsuarisApp}}
+                </div>
+              </div>
+            </q-btn>
+          </div>
+        </div>
+
       </div>
-    </div>
-
-    <div class="row   q-pa-sm">
-
 
     </div>
 
@@ -132,10 +195,20 @@
     name: "PanellAdmin",
     async created() {
 
+      const responseProfes = await this.$axiosCore.get('/private/professor/counter')
+      if (responseProfes.status === 200) {
+        this.numeroDeProfesoresApp = responseProfes.data
+      }
+      const responseUsuarisApp = await this.$axiosCore.get('/admin/usuaris/counter')
+      if (responseUsuarisApp.status === 200) {
+        this.numeroUsuarisApp = responseUsuarisApp.data
+      }
 
     },
     data() {
       return {
+        numeroDeProfesoresApp: null,
+        numeroUsuarisApp: null,
         fileXml: null,
         uploadXML: false,
         uploadingXml: false,
