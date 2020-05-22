@@ -8,7 +8,7 @@
           :columns="columns"
           @row-click="onRowClick"
           row-key="codi"
-          rows-per-page-label="Alumnos por fila"
+          rows-per-page-label="Alumnes per fila"
           :rows-per-page-options="[5,12,0]"
           separator="cell"
         >
@@ -16,11 +16,11 @@
             <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
               <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
                         v-model="grupoSeleccionado"
-                        :options="grups" label="Grupo"
+                        :options="grups" label="Grup"
                         @input="filterAlumnes(filtroDeAlumnos)"/>
 
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
-                       v-model="filtroDeAlumnos" placeholder="Search"
+                       v-model="filtroDeAlumnos" placeholder="Cerca"
                        @input="filterAlumnes">
                 <template v-slot:append>
                   <q-icon name="search"/>
@@ -64,12 +64,12 @@ export default {
      this.grups = responseGrups.data.map(grup => {
        return grup.curs.descripcio +"-"+grup.nom;
      });     
-     this.grups.unshift("Todos");
+     this.grups.unshift("Tots");
   },
   data() {
     return {
       grups: [],
-      grupoSeleccionado: 'Todos',
+      grupoSeleccionado: 'Tots',
       alumnesFiltered: '',
       filtroDeAlumnos: '',
       filter: {
@@ -129,7 +129,7 @@ export default {
         this.alumnesFiltered = this.alumnes.filter(alumne => {
           const nombreCompleto = alumne.nom + ' ' + alumne.ap1 + ' ' + alumne.ap2;
 
-          if(this.grupoSeleccionado.toLowerCase() !== 'todos' && this.grupoSeleccionado !== alumne.grup) return false
+          if(this.grupoSeleccionado.toLowerCase() !== 'tots' && this.grupoSeleccionado !== alumne.grup) return false
           return nombreCompleto.toLowerCase().includes(textoFiltro);
         })      
       },
