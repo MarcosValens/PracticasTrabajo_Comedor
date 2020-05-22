@@ -129,8 +129,9 @@
 
           const response = await this.$axiosCore.put('/admin/professor/email', {
             email: email,
-            codigo: codigo
+            codi: codigo
           })
+
 
           if (response.status === 200) {
             this.notify("Email asignado correctamente")
