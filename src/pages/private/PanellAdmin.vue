@@ -1,34 +1,65 @@
 <template>
-  <q-page class="q-pa-xl">
+  <q-page :class="$q.screen.gt.sm?'q-pa-xl':'q-pa-xs q-pt-md'">
 
     <div :class="$q.screen.gt.md?'full-width flex justify-between q-px-sm':'full-width q-px-sm'">
-      <div>
+      <div v-if="$q.screen.gt.md">
         <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualitzar CORE via XML"
                icon="far fa-file-excel" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
+
+        <q-btn color="primary" outline unelevated label="Afegir usuari" @click="dialogAfegisUsuari=true"
+               icon="add" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
       </div>
-      <q-input outlined dense debounce="300" placeholder="Search" @input="filterProfesor" v-model="filtroProfesor">
-        <template v-slot:prepend>
-          <q-icon name="search"/>
-        </template>
-      </q-input>
+      <div v-if="!$q.screen.gt.md">
+        <q-btn label="acciones" unelevated color="primary" icon-right="keyboard_arrow_down" class="full-width q-mb-md">
+          <q-menu fit>
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup @click="uploadXML=!uploadXML">
+                <q-item-section avatar>
+                  <q-icon name="far fa-file-excel"/>
+                </q-item-section>
+                <q-item-section class="">ACTUALITZAR CORE VIA XML</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup @click="dialogAfegisUsuari=true">
+                <q-item-section avatar>
+                  <q-icon name="add"/>
+                </q-item-section>
+                <q-item-section>AFEGIR USUARI</q-item-section>
+              </q-item>
+
+            </q-list>
+          </q-menu>
+        </q-btn>
+      </div>
     </div>
 
-    <div class="row  q-mt-sm q-pa-sm">
+    <div class="row   q-pa-sm">
+
+
       <q-table
-        class="full-width" :data="dataProfesoresFiltered" :columns="columns" row-key="name" separator="cell"
-        :pagination="{
-          rowsPerPage: 10
-        }" :rows-per-page-options="[0,12,15]"
+        class="full-width" :data="dataProfesoresFiltered" :columns="columnsProfesores" row-key="name" separator="cell"
       >
+        <template v-slot:top class="bg-indigo">
+          <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+            <div class="text-h5">Professors</div>
+            <q-input outlined dense debounce="300" placeholder="Cercar" @input="filterProfesor"
+                     v-model="filtroProfesor">
+              <template v-slot:append>
+                <q-icon name="search"/>
+              </template>
+            </q-input>
+
+          </div>
+        </template>
 
         <template v-slot:body="props">
+
           <q-tr :props="props">
             <q-td key="username" :props="props">{{props.row.username}}</q-td>
             <q-td key="nom" :props="props">{{props.row.nom}}</q-td>
             <q-td key="apellido" :props="props">{{props.row.ap1}}</q-td>
             <q-td key="apellido2" :props="props">{{props.row.ap2}}</q-td>
             <q-td key="email" :props="props" style="max-width: 200px">
-              <q-input v-model="props.row.email" outlined label="Asignar email" class="full-width">
+              <q-input dense v-model="props.row.email" outlined label="Asignar email" class="full-width">
                 <template v-slot:append>
                   <q-btn class="q-mx-xs" round size="sm" color="green-9" icon="fas fa-save"
                          @click="asignarEmail((props.row))"
@@ -44,6 +75,7 @@
           </q-tr>
         </template>
       </q-table>
+
     </div>
 
 
@@ -51,7 +83,7 @@
       <q-card style="min-width: 350px">
         <q-card-section>
           <div class="text-h6">
-            Escoger archivo xml
+            Escollir arxiu xml
           </div>
         </q-card-section>
         <q-card-section>
@@ -82,6 +114,57 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+
+    <q-dialog v-model="dialogAfegisUsuari" @before-hide="clearNewUsuari" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h5">
+            Afegir usuari
+          </div>
+        </q-card-section>
+        <q-separator inset=""/>
+        <q-card-section>
+          <div class="text-h6 text-weight-light">
+            Informació
+          </div>
+          <q-input v-model="usuarioToAdd.nombre" placeholder="Nom" outlined dense class="q-my-sm"/>
+          <div class="row q-my-sm full-width no-wrap">
+            <q-input v-model="usuarioToAdd.apellido1" placeholder="Cognom" outlined dense class="q-pr-xs"/>
+            <q-input v-model="usuarioToAdd.apellido2" placeholder="Segon cognom" outlined dense class=" q-pl-xs"/>
+          </div>
+          <q-input v-model="usuarioToAdd.email" placeholder="Email" outlined dense class="q-my-sm">
+
+            <template v-slot:append>
+              <q-icon name="far fa-envelope"></q-icon>
+            </template>
+          </q-input>
+          <q-input v-model="usuarioToAdd.contrasenya" outlined dense
+                   :type="usuarioToAdd.showContrasenya ? 'text' : 'password'" placeholder="Contrasenya" class="q-my-sm">
+            <template v-slot:append>
+              <q-icon
+                :name="!usuarioToAdd.showContrasenya ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="usuarioToAdd.showContrasenya = !usuarioToAdd.showContrasenya"
+              />
+            </template>
+          </q-input>
+        </q-card-section>
+        <q-separator inset=""/>
+        <q-card-section>
+          <div class="text-h6 text-weight-light">
+            Rols
+          </div>
+          <q-checkbox size="md" v-model="usuarioToAdd.roles" val="Cuiner" label="Cuiner"/>
+          <q-checkbox size="md" v-model="usuarioToAdd.roles" val="Monitor" label="Monitor"/>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup label="cancelar" unelevated outline color="primary"/>
+          <q-btn v-close-popup label="Desar" @click="saveNewUsuari" unelevated color="green-9"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-page>
 </template>
 
@@ -108,19 +191,29 @@
         fileXml: null,
         uploadXML: false,
         uploadingXml: false,
-        columns: [
-          {name: 'username', align: 'center', label: 'Username', field: row => row.username, sortable: true},
+        dialogAfegisUsuari: false,
+        usuarioToAdd: {
+          nombre: '',
+          apellido1: '',
+          apellido2: '',
+          email: '',
+          contrasenya: '',
+          roles: [],
+          showContrasenya: false
+        },
+        columnsProfesores: [
+          {name: 'username', align: 'center', label: 'Nom d\'usuari', field: row => row.username, sortable: true},
 
           {
             name: 'nom',
             required: true,
-            label: 'Nombre',
+            label: 'Nom',
             align: 'left',
             field: row => row.nom,
             sortable: true,
           },
-          {name: 'apellido', align: 'left', label: 'Apellido', field: row => row.ap1, sortable: true},
-          {name: 'apellido2', align: 'left', label: 'Segundo apellido', field: row => row.ap2, sortable: true},
+          {name: 'apellido', align: 'left', label: 'Cognom', field: row => row.ap1, sortable: true},
+          {name: 'apellido2', align: 'left', label: 'Segon cognom', field: row => row.ap2, sortable: true},
           {name: 'email', align: 'center', label: 'Email', field: row => row.email, sortable: true},
 
         ],
@@ -193,6 +286,23 @@
           this.notify("Email eliminado correctamente")
         } else {
           this.notify(response.data);
+        }
+      },
+      clearNewUsuari() {
+        this.usuarioToAdd.nombre = '';
+        this.usuarioToAdd.apellido1 = '';
+        this.usuarioToAdd.apellido2 = '';
+        this.usuarioToAdd.email = '';
+        this.usuarioToAdd.contrasenya = '';
+        this.usuarioToAdd.roles = [];
+        this.usuarioToAdd.showContrasenya = false;
+      },
+      async saveNewUsuari() {
+
+        const response = await this.$axiosCore.post('/admin/auth/register', this.usuarioToAdd);
+        if (response.status === 200) {
+          this.clearNewUsuari();
+          this.notify("Usuari desat correctament")
         }
       }
     }
