@@ -3,7 +3,7 @@
 
     <div :class="$q.screen.gt.md?'full-width flex justify-between q-px-sm':'full-width q-px-sm'">
       <div>
-        <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualizar CORE via XML"
+        <q-btn color="primary" @click="uploadXML=!uploadXML" unelevated label="Actualitzar CORE via XML"
                icon="far fa-file-excel" :class="$q.screen.gt.md?'q-mx-xs':'q-mx-xs q-mb-md full-width'"/>
       </div>
       <q-input outlined dense debounce="300" placeholder="Search" @input="filterProfesor" v-model="filtroProfesor">

@@ -1,5 +1,10 @@
-
 const routes = [
+  {
+    path: '/',
+    children: [
+      {path: "", redirect: '/private'},
+    ]
+  },
   {
     path: '/private',
     component: () => import('layouts/MainLayout.vue'),

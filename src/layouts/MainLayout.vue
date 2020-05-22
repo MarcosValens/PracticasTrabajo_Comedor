@@ -24,7 +24,7 @@
       show-if-above
       bordered
       :mini="!drawer || miniState"
-      content-class="bg-grey-2 column justify-between"
+      :content-class="$q.screen.height>489?'bg-grey-2 column justify-between':'bg-grey-2'"
     >
       <q-list>
         <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link">
@@ -60,7 +60,7 @@
             <q-item-section avatar>
               <q-icon :name="link.icon"/>
             </q-item-section>
-            <q-tooltip :delay="300"
+            <q-tooltip :delay="150"
                        transition-hide="slide-left" anchor="center right" self="center left">
               {{link.title}}
             </q-tooltip>
