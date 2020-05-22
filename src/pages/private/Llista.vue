@@ -43,7 +43,7 @@
               />
 
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
-                       v-model="filtroDeUsuarios" placeholder="Search"
+                       v-model="filtroDeUsuarios" placeholder="Cercar"
                        @input="filterUsuarios">
                 <template v-slot:append>
                   <q-icon name="search"/>
