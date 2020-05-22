@@ -8,10 +8,10 @@
         <q-menu fit>
           <q-list style="min-width: 100px">
             <q-item clickable @click="seleccionarSemanaPasada">
-              <q-item-section>Igual semana pasada</q-item-section>
+              <q-item-section>Igual setmana pasada</q-item-section>
             </q-item>
             <q-item clickable @click="seleccionarDiaPasado">
-              <q-item-section>Seleccion igual que ayer</q-item-section>
+              <q-item-section>Selecció igual que ahir</q-item-section>
             </q-item>
 
           </q-list>
@@ -141,7 +141,7 @@
           {
             name: "ap1",
             required: true,
-            label: "Primer cognom",
+            label: "Cognom",
             align: "left",
             field: row => row.ap1,
             format: val => `${val}`,
