@@ -1,8 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="text-h4">Usuaris</div>
     <div class="row">
-      <div class="col-lg-9 col-12  q-pa-sm">
+      <div class="col-12 q-pa-sm">
         <q-table
           :data="usuarisFiltered"
           :columns="columns"
@@ -10,19 +9,20 @@
           rows-per-page-label="Usuaris per fila"
           :rows-per-page-options="[5,12,0]"
           separator="cell"
+          :pagination.sync="myPagination"
         >
-        <template v-slot:top class="bg-indigo">
+        <template v-slot:top>
             <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+            <div class="text-h4">Usuaris</div>
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
-                       v-model="filtroDeUsuarios" placeholder="Cerca"
-                       @input="filterUsuari">
+                      v-model="filtroDeUsuarios" placeholder="Cerca"
+                      @input="filterUsuari">
                 <template v-slot:append>
                   <q-icon name="search"/>
                 </template>
               </q-input>
             </div>
-          </template>
-
+        </template>
         </q-table>
       </div>
     </div>
@@ -44,7 +44,7 @@ export default {
           email: usuario.email,
           isAdmin: usuario.admin,
           isCuiner: usuario.cuiner,
-          isMonitor: usuario.monitor
+          isMonitor: usuario.monito
       }
       return newUsuari;
     })
@@ -54,6 +54,9 @@ export default {
   },
   data() {
     return {
+      myPagination: {
+        rowsPerPage: 14
+      },
       usuarisFiltered: '',
       usuarioSeleccionado: '',
       filtroDeUsuarios: '',

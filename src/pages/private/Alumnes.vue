@@ -11,7 +11,6 @@
           :rows-per-page-options="[5,12,0]"
           separator="cell"
           :pagination.sync="myPagination"
-
         >
           <template v-slot:top>
             <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
@@ -44,7 +43,6 @@ export default {
   name: "PagesAlumne",
   async created() {
     const responseAlumnes = await this.$axiosCore.get( "/private/alumnos");
-    console.log(responseAlumnes);
     this.alumnes = responseAlumnes.data.map(alumno => {
       const newAlumno = {
         nom: alumno.nom,
@@ -62,6 +60,7 @@ export default {
       newAlumno.grup = grupo;
       return newAlumno;
     });
+    this.alumnes = this.orderAlumnes(this.alumnes);
     this.alumnesFiltered = this.alumnes;
      const responseGrups = await this.$axiosCore.get( "/private/grupos");
     this.grups = responseGrups.data.map(grup => {
@@ -138,6 +137,17 @@ export default {
           return nombreCompleto.toLowerCase().includes(textoFiltro);
         })
       },
+      orderAlumnes(alumnes){
+        return alumnes.sort((a,b) => {
+        if(a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
+          return -1;
+        }
+        if(a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
+      }
   }
 };
 </script>
