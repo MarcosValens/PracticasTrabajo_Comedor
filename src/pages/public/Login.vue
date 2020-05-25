@@ -76,7 +76,7 @@
             if (rol === "monitor") userRoles.push(process.env.MONITOR_ROL)
             if (rol === "admin") userRoles.push(process.env.ADMIN_ROL)
           })
-
+        
           localStorage.setItem('rol', JSON.stringify(userRoles));
 
           await this.$router.push("/")

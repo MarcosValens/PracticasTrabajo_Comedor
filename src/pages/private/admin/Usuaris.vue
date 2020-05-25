@@ -4,7 +4,6 @@
     <div class="row">
       <div class="col-lg-9 col-12  q-pa-sm">
         <q-table
-          title="Pasar llista"
           :data="usuarisFiltered"
           :columns="columns"
           row-key="codi"
@@ -14,10 +13,6 @@
         >
         <template v-slot:top class="bg-indigo">
             <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
-              <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
-                        v-model="usuarioSeleccionado"
-                        :options="usuarios" label="Usuari"
-                        @input="filterUsuari(filtroDeUsuarios)"/>
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
                        v-model="filtroDeUsuarios" placeholder="Cerca"
                        @input="filterUsuari">
@@ -40,21 +35,43 @@ export default {
   name: "PagesUsuaris",
   async created(){
     const responseUsuaris = await this.$axiosCore.get("/admin/usuaris");
+
+    this.usuaris = responseUsuaris.data.map(usuario => {
+      const newUsuari = {
+          nom: usuario.nombre,
+          ap1: usuario.apellido1,
+          ap2: usuario.apellido2,
+          email: usuario.email,
+          isAdmin: usuario.admin,
+          isCuiner: usuario.cuiner,
+          isMonitor: usuario.monitor
+      }
+      return newUsuari;
+    })
+    console.log(this.usuaris);
+    this.usuaris = this.orderUsuaris(this.usuaris);
+    this.usuarisFiltered = this.usuaris;
   },
   data() {
     return {
       usuarisFiltered: '',
       usuarioSeleccionado: '',
-      usuarios: [],
       filtroDeUsuarios: '',
       filter: {
-        nom: null,
-        cognoms: {
-          primer: null,
-          segon: null
-        }
+        nom: "",
+        ap1: "",
+        ap2: "",
       },      
       columns: [
+         {
+          name: "email",
+          required: true,
+          label: "Email",
+          align: "center",
+          field: row => row.email,
+          format: val => `${val}`,
+          sortable: true
+        },
         {
           name: "nom",
           required: true,
@@ -83,32 +100,57 @@ export default {
           sortable: true
         },
          {
-          name: "usuario",
+          name: "isAdmin",
           required: true,
-          label: "Usuario",
+          label: "Administrador",
           align: "center",
-          field: row => row.usuario,
+          field: row => row.isAdmin,
           format: val => `${val}`,
           sortable: true
         },
         {
-          name: "rol",
+          name: "isCuiner",
           required: true,
-          label: "Tipo",
+          label: "Cuiner",
           align: "center",
-          field: row => row.rol,
+          field: row => row.isCuiner,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "isMonitor",
+          required: true,
+          label: "Monitor",
+          align: "center",
+          field: row => row.isMonitor,
           format: val => `${val}`,
           sortable: true
         }
       ],
       usuaris: [],
       usuarisFiltered: []
-
     };
   },
   methods: {
     filterUsuari(){
-      console.log("filtracio");
+      const textoFiltro = this.filtroDeUsuarios.toLowerCase();
+      this.usuarisFiltered = this.usuaris.filter(usuari => {
+        const nombreCompleto = usuari.nom + ' ' + usuari.ap1 + ' ' + usuari.ap2;
+        return nombreCompleto.toLowerCase().includes(textoFiltro);
+      })
+    },
+    orderUsuaris(usuaris){
+      return usuaris.sort((a,b) => {
+        if(a.nom == null) a.nom = "No tiene nombre seleccionado";
+        if(b.nom == null) b.nom = "No tiene nombre seleccionado";
+        if(a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
+          return -1;
+        }
+        if(a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
     }
   }
 };

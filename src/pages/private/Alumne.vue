@@ -56,6 +56,7 @@
                     ap1: '',
                     ap2: '',
                     foto: '',
+                    codi: '',
                     tutors: [],
                 },
                 allFichajes: []
@@ -67,6 +68,7 @@
             this.alumne.nom = alumne.nom;
             this.alumne.ap1 = alumne.ap1;
             this.alumne.ap2 = alumne.ap2;
+            this.alumne.codi = alumne.codi;
             let tutores = [];
             alumne.tutorsAlumnes.forEach(tutor => {
               let newTutor = {
@@ -79,6 +81,10 @@
               tutores.push(newTutor);
             });
             this.alumne.tutors = tutores;
+
+            const responseTurnos = await this.$axiosCore.get("/private/alumno/"+alumne.codi+"/comedor/marcaje");
+            let turnos = responseTurnos;
+            console.log(turnos);
 
             let marcaje = {
               dia: "25/05/2020",

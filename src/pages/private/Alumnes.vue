@@ -128,7 +128,6 @@ export default {
         const textoFiltro = this.filtroDeAlumnos.toLowerCase();
         this.alumnesFiltered = this.alumnes.filter(alumne => {
           const nombreCompleto = alumne.nom + ' ' + alumne.ap1 + ' ' + alumne.ap2;
-
           if(this.grupoSeleccionado.toLowerCase() !== 'tots' && this.grupoSeleccionado !== alumne.grup) return false
           return nombreCompleto.toLowerCase().includes(textoFiltro);
         })      
