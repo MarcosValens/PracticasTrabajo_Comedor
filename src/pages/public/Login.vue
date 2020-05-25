@@ -71,7 +71,7 @@
           const recived = JSON.parse(responseLogin.data.rol)
           const userRoles = [];
           recived.forEach(rol => {
-            if (rol === "cuiner") userRoles.push(process.env.CUINER_ROl)
+            if (rol === "cuiner") userRoles.push(process.env.CUINER_ROL)
             if (rol === "monitor") userRoles.push(process.env.MONITOR_ROL)
             if (rol === "admin") userRoles.push(process.env.ADMIN_ROL)
           })

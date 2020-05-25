@@ -102,25 +102,25 @@
             title: "Inici",
             icon: "home",
             link: "/private/inici",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROl]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Alumnes",
             icon: "school",
             link: "/private/alumnes",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROl]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Dies",
             icon: "wb_sunny",
             link: "/private/dies",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROl]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Pasar llista",
             icon: "list_alt",
             link: "/private/llista",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROl]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Panell d'administració",
