@@ -1,38 +1,31 @@
 <template>
   <q-page class="q-pa-md">
-    <q-table
-      title="Pasar llista"
-      :data="data"
-      :columns="columns"
-      @row-click="rowclick"
-      :selected-rows-label="getSelectedString"
-      selection="multiple"
-      row-key="codi"
-      :selected.sync="selected"
-    >
-      <template slot="top">
-        <div class="row justify-between align-center" style="width: 100%;">
-          <div class="col">
-            <q-input v-model="search.nom" label="Nom" />
-          </div>
-          <div class="col">
-            <q-input v-model="search.cognoms.primer" label="Primer Cognom" />
-          </div>
-          <div class="col">
-            <q-input v-model="search.cognoms.segon" label="Segon Cognom" />
-          </div>
-          <div class="col">
-            <q-btn
-              @click="$router.push('alumne')"
-              icon="add_circle"
-              size="14px"
-              color="primary"
-              label="Afegir"
-            />
-          </div>
-        </div>
-      </template>
-    </q-table>
+    <div class="row">
+      <div class="col-12 q-pa-sm">
+        <q-table
+          :data="usuarisFiltered"
+          :columns="columns"
+          row-key="codi"
+          rows-per-page-label="Usuaris per fila"
+          :rows-per-page-options="[5,12,0]"
+          separator="cell"
+          :pagination.sync="myPagination"
+        >
+        <template v-slot:top>
+            <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+            <div class="text-h4">Usuaris</div>
+              <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
+                      v-model="filtroDeUsuarios" placeholder="Cerca"
+                      @input="filterUsuari">
+                <template v-slot:append>
+                  <q-icon name="search"/>
+                </template>
+              </q-input>
+            </div>
+        </template>
+        </q-table>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -40,23 +33,45 @@
 <script>
 export default {
   name: "PagesUsuaris",
+  async created(){
+    const responseUsuaris = await this.$axiosCore.get("/admin/usuaris");
+
+    this.usuaris = responseUsuaris.data.map(usuario => {
+      const newUsuari = {
+          nom: usuario.nombre,
+          ap1: usuario.apellido1,
+          ap2: usuario.apellido2,
+          email: usuario.email,
+          isAdmin: usuario.admin,
+          isCuiner: usuario.cuiner,
+          isMonitor: usuario.monito
+      }
+      return newUsuari;
+    })
+    console.log(this.usuaris);
+    this.usuaris = this.orderUsuaris(this.usuaris);
+    this.usuarisFiltered = this.usuaris;
+  },
   data() {
     return {
-      selected: [],
-      search: {
-        nom: null,
-        cognoms: {
-          primer: null,
-          segon: null
-        }
+      myPagination: {
+        rowsPerPage: 14
       },
+      usuarisFiltered: '',
+      usuarioSeleccionado: '',
+      filtroDeUsuarios: '',
+      filter: {
+        nom: "",
+        ap1: "",
+        ap2: "",
+      },      
       columns: [
-        {
-          name: "id",
+         {
+          name: "email",
           required: true,
-          label: "Id",
-          align: "left",
-          field: row => row.id,
+          label: "Email",
+          align: "center",
+          field: row => row.email,
           format: val => `${val}`,
           sortable: true
         },
@@ -64,7 +79,7 @@ export default {
           name: "nom",
           required: true,
           label: "Nom",
-          align: "left",
+          align: "center",
           field: row => row.nom,
           format: val => `${val}`,
           sortable: true
@@ -73,7 +88,7 @@ export default {
           name: "ap1",
           required: true,
           label: "Primer cognom",
-          align: "left",
+          align: "center",
           field: row => row.ap1,
           format: val => `${val}`,
           sortable: true
@@ -82,92 +97,63 @@ export default {
           name: "ap2",
           required: true,
           label: "Segon cognom",
-          align: "left",
+          align: "center",
           field: row => row.ap2,
           format: val => `${val}`,
           sortable: true
         },
          {
-          name: "usuario",
+          name: "isAdmin",
           required: true,
-          label: "Usuario",
-          align: "left",
-          field: row => row.usuario,
+          label: "Administrador",
+          align: "center",
+          field: row => row.isAdmin,
           format: val => `${val}`,
           sortable: true
         },
         {
-          name: "rol",
+          name: "isCuiner",
           required: true,
-          label: "Tipo",
-          align: "left",
-          field: row => row.rol,
+          label: "Cuiner",
+          align: "center",
+          field: row => row.isCuiner,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "isMonitor",
+          required: true,
+          label: "Monitor",
+          align: "center",
+          field: row => row.isMonitor,
           format: val => `${val}`,
           sortable: true
         }
       ],
-      data: [
-        {
-          id: 1,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-         {
-          id: 2,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Jefe Cocina"
-        },
-          {
-          id: 3,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 4,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 5,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 6,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-      ]
+      usuaris: [],
+      usuarisFiltered: []
     };
   },
   methods: {
-    rowclick: function(evt, row) {
-      console.log(evt, row);
+    filterUsuari(){
+      const textoFiltro = this.filtroDeUsuarios.toLowerCase();
+      this.usuarisFiltered = this.usuaris.filter(usuari => {
+        const nombreCompleto = usuari.nom + ' ' + usuari.ap1 + ' ' + usuari.ap2;
+        return nombreCompleto.toLowerCase().includes(textoFiltro);
+      })
     },
-    getSelectedString() {
-      return this.selected.length === 0
-        ? ""
-        : `${this.selected.length} record${
-            this.selected.length > 1 ? "s" : ""
-          } selected of ${this.data.length}`;
+    orderUsuaris(usuaris){
+      return usuaris.sort((a,b) => {
+        if(a.nom == null) a.nom = "No tiene nombre seleccionado";
+        if(b.nom == null) b.nom = "No tiene nombre seleccionado";
+        if(a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
+          return -1;
+        }
+        if(a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
+          return 1;
+        }
+        return 0;
+      })
     }
   }
 };

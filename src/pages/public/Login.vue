@@ -68,14 +68,15 @@
           localStorage.setItem("access_token", access)
           localStorage.setItem("refresh_token", refresh)
 
-          const recived = JSON.parse(responseLogin.data.rol)
+          const recived = JSON.parse(responseLogin.data.rol);
+          console.log("recived",recived);
           const userRoles = [];
           recived.forEach(rol => {
             if (rol === "cuiner") userRoles.push(process.env.CUINER_ROL)
             if (rol === "monitor") userRoles.push(process.env.MONITOR_ROL)
             if (rol === "admin") userRoles.push(process.env.ADMIN_ROL)
           })
-
+        
           localStorage.setItem('rol', JSON.stringify(userRoles));
 
           await this.$router.push("/")
