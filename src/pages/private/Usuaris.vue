@@ -1,38 +1,36 @@
 <template>
   <q-page class="q-pa-md">
-    <q-table
-      title="Pasar llista"
-      :data="data"
-      :columns="columns"
-      @row-click="rowclick"
-      :selected-rows-label="getSelectedString"
-      selection="multiple"
-      row-key="codi"
-      :selected.sync="selected"
-    >
-      <template slot="top">
-        <div class="row justify-between align-center" style="width: 100%;">
-          <div class="col">
-            <q-input v-model="search.nom" label="Nom" />
-          </div>
-          <div class="col">
-            <q-input v-model="search.cognoms.primer" label="Primer Cognom" />
-          </div>
-          <div class="col">
-            <q-input v-model="search.cognoms.segon" label="Segon Cognom" />
-          </div>
-          <div class="col">
-            <q-btn
-              @click="$router.push('alumne')"
-              icon="add_circle"
-              size="14px"
-              color="primary"
-              label="Afegir"
-            />
-          </div>
-        </div>
-      </template>
-    </q-table>
+    <div class="text-h4">Usuaris</div>
+    <div class="row">
+      <div class="col-lg-9 col-12  q-pa-sm">
+        <q-table
+          title="Pasar llista"
+          :data="usuarisFiltered"
+          :columns="columns"
+          row-key="codi"
+          rows-per-page-label="Usuaris per fila"
+          :rows-per-page-options="[5,12,0]"
+          separator="cell"
+        >
+        <template v-slot:top class="bg-indigo">
+            <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+              <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
+                        v-model="usuarioSeleccionado"
+                        :options="usuarios" label="Usuari"
+                        @input="filterUsuari(filtroDeUsuarios)"/>
+              <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
+                       v-model="filtroDeUsuarios" placeholder="Cerca"
+                       @input="filterUsuari">
+                <template v-slot:append>
+                  <q-icon name="search"/>
+                </template>
+              </q-input>
+            </div>
+          </template>
+
+        </q-table>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -40,31 +38,28 @@
 <script>
 export default {
   name: "PagesUsuaris",
+  async created(){
+    const responseUsuaris = await this.$axiosCore.get("/admin/usuaris");
+  },
   data() {
     return {
-      selected: [],
-      search: {
+      usuarisFiltered: '',
+      usuarioSeleccionado: '',
+      usuarios: [],
+      filtroDeUsuarios: '',
+      filter: {
         nom: null,
         cognoms: {
           primer: null,
           segon: null
         }
-      },
+      },      
       columns: [
-        {
-          name: "id",
-          required: true,
-          label: "Id",
-          align: "left",
-          field: row => row.id,
-          format: val => `${val}`,
-          sortable: true
-        },
         {
           name: "nom",
           required: true,
           label: "Nom",
-          align: "left",
+          align: "center",
           field: row => row.nom,
           format: val => `${val}`,
           sortable: true
@@ -73,7 +68,7 @@ export default {
           name: "ap1",
           required: true,
           label: "Primer cognom",
-          align: "left",
+          align: "center",
           field: row => row.ap1,
           format: val => `${val}`,
           sortable: true
@@ -82,7 +77,7 @@ export default {
           name: "ap2",
           required: true,
           label: "Segon cognom",
-          align: "left",
+          align: "center",
           field: row => row.ap2,
           format: val => `${val}`,
           sortable: true
@@ -91,7 +86,7 @@ export default {
           name: "usuario",
           required: true,
           label: "Usuario",
-          align: "left",
+          align: "center",
           field: row => row.usuario,
           format: val => `${val}`,
           sortable: true
@@ -100,74 +95,20 @@ export default {
           name: "rol",
           required: true,
           label: "Tipo",
-          align: "left",
+          align: "center",
           field: row => row.rol,
           format: val => `${val}`,
           sortable: true
         }
       ],
-      data: [
-        {
-          id: 1,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-         {
-          id: 2,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Jefe Cocina"
-        },
-          {
-          id: 3,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 4,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 5,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-          {
-          id: 6,
-          nom: "Xavi",
-          ap1: "Doe",
-          ap2: "Doe",
-          usuario: "xdoe",
-          rol: "Monitor"
-        },
-      ]
+      usuaris: [],
+      usuarisFiltered: []
+
     };
   },
   methods: {
-    rowclick: function(evt, row) {
-      console.log(evt, row);
-    },
-    getSelectedString() {
-      return this.selected.length === 0
-        ? ""
-        : `${this.selected.length} record${
-            this.selected.length > 1 ? "s" : ""
-          } selected of ${this.data.length}`;
+    filterUsuari(){
+      console.log("filtracio");
     }
   }
 };
