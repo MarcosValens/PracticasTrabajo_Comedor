@@ -85,13 +85,13 @@ module.exports = function (ctx) {
       },
       env: ctx.dev ? {
         CORE_URL: JSON.stringify("http://localhost:8080"),
-        CUINER_ROl: JSON.stringify("cuiner"),
+        CUINER_ROL: JSON.stringify("cuiner"),
         MONITOR_ROL: JSON.stringify("monitor"),
         ADMIN_ROL: JSON.stringify("admin"),
         URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')
       } : {
         CORE_URL: JSON.stringify("https://menjador.esliceu.com/api"),
-        CUINER_ROl: JSON.stringify("cuiner"),
+        CUINER_ROL: JSON.stringify("cuiner"),
         MONITOR_ROL: JSON.stringify("monitor"),
         ADMIN_ROL: JSON.stringify("admin"),
         URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')

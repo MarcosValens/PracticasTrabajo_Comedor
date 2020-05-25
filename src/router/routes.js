@@ -12,14 +12,10 @@ const routes = [
       {path: "", redirect: 'inici'},
       {path: 'inici', component: () => import('pages/private/Index.vue')},
       {path: 'alumnes', component: () => import('pages/private/Alumnes.vue')},
-      {path: 'professors', component: () => import('pages/private/Professors.vue')},
-      {path: 'usuaris', component: () => import('pages/private/Usuaris.vue')},
       {path: 'dies', component: () => import('pages/private/Dies.vue')},
       {path: 'llista', component: () => import('pages/private/Llista.vue')},
       {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')},
       {path: 'dia/:id', component: () => import('pages/private/Dia.vue')},
-      {path: 'professor/:id', component: () => import('pages/private/Professor.vue')},
-      {path: 'usuari/:id', component: () => import('pages/private/Usuari.vue')},
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
@@ -41,7 +37,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {path: "", redirect: 'panel'},
-      {path: 'panel', component: () => import('pages/private/PanellAdmin.vue')},
+      {path: 'panel', component: () => import('pages/private/admin/PanellAdmin.vue')},
+      {path: 'professor/:id', component: () => import('pages/private/admin/Professor.vue')},
+      {path: 'usuari/:id', component: () => import('pages/private/admin/Usuari.vue')},
+      {path: 'professors', component: () => import('pages/private/admin/Professors.vue')},
+      {path: 'usuaris', component: () => import('pages/private/admin/Usuaris.vue')},
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
