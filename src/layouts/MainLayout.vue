@@ -102,7 +102,7 @@
             title: "Inici",
             icon: "home",
             link: "/private/inici",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL, process.env.ADMIN_ROL]
           },
           {
             title: "Alumnes",
