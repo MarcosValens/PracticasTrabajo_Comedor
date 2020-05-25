@@ -39,8 +39,12 @@
                         v-model="tipoUsuarioSeleccionado"
                         :options="optionsTipoUsuario" label="Tipo de usuario"
                         @input="filterUsuarios(filtroDeUsuarios)"
-                        :disable="soloPuedeFicharAlumnos"
-              />
+                        :readonly="soloPuedeFicharAlumnos"
+              >
+
+                <q-tooltip v-if="soloPuedeFicharAlumnos">Nomes cuiners poden marcar altres usuaris que alumnes
+                </q-tooltip>
+              </q-select>
 
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
                        v-model="filtroDeUsuarios" placeholder="Cercar"
@@ -108,18 +112,28 @@
       /*
       * TODO: QUE ESTO VENGA DEL LOCALSTORAGE UNA VEZ LOS ROLES EN EL LOGUIN ESTEN IMPLEMENTADOS
       * */
-      this.rolLogued = this.cuinerRol
-      if (this.rolLogued === this.monitorRol) {
+      this.rolesLogued = JSON.parse(localStorage.getItem("rol"))
+
+      let isCuiner = false;
+      console.log("ROLES:", this.rolesLogued)
+
+      this.rolesLogued.forEach(rol => {
+        if (rol === process.env.CUINER_ROL) {
+          isCuiner = true;
+        }
+      })
+
+      if (!isCuiner) {
         this.tipoUsuarioSeleccionado = 'Alumne'
-        this.soloPuedeFicharAlumnos = this.rolLogued === this.monitorRol;
+        this.soloPuedeFicharAlumnos = true
         this.filterUsuarios(this.filtroDeUsuarios)
       }
 
     },
     data() {
       return {
-        rolLogued: '',
-        cuinerRol: process.env.CUINER_ROl,
+        rolesLogued: [],
+        cuinerRol: process.env.CUINER_ROL,
         monitorRol: process.env.MONITOR_ROL,
         soloPuedeFicharAlumnos: false,
         fabPos: [18, 18],

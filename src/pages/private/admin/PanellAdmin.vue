@@ -16,14 +16,14 @@
             <div class="text-h5">
               <q-icon name="far fa-file-excel"/>
 
-              ACTUALIZAR CORE VIA XML
+              ACTUALITZAR CORE VIA XML
             </div>
           </q-btn>
           <div>
             <q-btn
               color="white"
               text-color="black"
-              to="/private/professors"
+              to="professors"
 
               style="height: 230px; width: 300px; "
               class="q-ma-sm "
@@ -70,7 +70,7 @@
           <div>
             <q-btn
               color="primary"
-              to="/private/usuaris"
+              to="usuaris"
 
               style="height: 130px; width: 300px; "
               class="q-ma-sm "
@@ -111,7 +111,7 @@
         <q-card-section>
           <q-file
             v-model="fileXml"
-            label="Escoger archivo (xml)"
+            label="Escollir/afegir arxiu (xml)"
             outlined
             use-chips
             style="max-width: 300px"
