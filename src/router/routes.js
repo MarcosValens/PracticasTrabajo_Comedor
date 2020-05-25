@@ -68,15 +68,20 @@ const routes = [
       {
         path: 'oauth/callback',
         beforeEnter: (to, from, next) => {
-          console.log("HOLAAAA")
 
           const url = new URL(location);
           const accessToken = url.searchParams.get('access_token');
           const refreshToken = url.searchParams.get('refresh_token');
 
-          // TODO, cuando pasen el rol, lo guardaremos
-          //const rol = url.searchParams.get('rol');
-          //localStorage.setItem('rol', rol);
+          const admin = url.searchParams.get('isAdmin');
+          const cuiner = url.searchParams.get('isCuiner');
+          const monitor = url.searchParams.get('isMonitor');
+
+          const userRoles = [];
+          if (cuiner) userRoles.push(process.env.CUINER_ROL)
+          if (monitor) userRoles.push(process.env.MONITOR_ROL)
+          if (admin) userRoles.push(process.env.ADMIN_ROL)
+          localStorage.setItem('rol', JSON.stringify(userRoles));
 
           /*
           * Save tokens
