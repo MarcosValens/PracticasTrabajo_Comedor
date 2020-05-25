@@ -44,7 +44,7 @@ export default {
           email: usuario.email,
           isAdmin: usuario.admin,
           isCuiner: usuario.cuiner,
-          isMonitor: usuario.monito
+          isMonitor: usuario.monitor
       }
       return newUsuari;
     })
