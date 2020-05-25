@@ -155,7 +155,6 @@
         this.roles.forEach(rol => {
           granted.forEach(aceptado => {
             if (rol === aceptado) result = true;
-            if (rol === aceptado) console.log("ACEPTADO:", rol, aceptado);
           })
         })
         return result;

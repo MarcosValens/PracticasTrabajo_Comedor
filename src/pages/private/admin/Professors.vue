@@ -54,6 +54,10 @@
       const response = await this.$axiosCore.get('/private/professor');
       if (response.status === 200) {
         this.dataProfesores = response.data;
+        this.dataProfesores = this.dataProfesores.map(profesor => {
+          if (profesor.usuariApp !== null) profesor.email = profesor.usuariApp.email
+          return profesor;
+        })
         this.dataProfesoresFiltered = this.dataProfesores;
       } else {
         this.notify(response.data)
@@ -123,6 +127,7 @@
         })
       },
       async asignarEmail(profesor) {
+        console.log(profesor)
         const codigo = profesor.codi;
         const email = profesor.email;
         if (codigo && email) {
