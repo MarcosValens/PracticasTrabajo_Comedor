@@ -126,7 +126,7 @@ export default {
   },
   methods: {
       onRowClick: function (evt, row) {
-          this.$router.push(`alumne/${row.codi}`)
+        this.$router.push(`alumne/${row.codi}`)
       },
       filterAlumnes(){
         const textoFiltro = this.filtroDeAlumnos.toLowerCase();
