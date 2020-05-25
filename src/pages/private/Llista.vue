@@ -102,11 +102,29 @@
 <script>
   export default {
     name: "PagesLlista",
-    created() {
+    async created() {
       /*
       * TODO RECUPERAR AQUI TODOS LOS USUARIOS QUE NECESITEMOS
       * */
 
+
+      /*
+      * Cogemos alumnos
+      * */
+      const promise = []
+      promise.push(this.$axiosCore.get('/private/alumne/comedor/listado'))
+      promise.push(this.$axiosCore.get('/private/alumne/comedor/listado'))
+
+      const responses = await Promise.all(promise)
+      if (responses[0].status === 200) {
+        const alumnos = responses[0].data;
+        console.log(alumnos)
+      }
+      if (responses[1].status === 200) {
+        const profesores = responses[0].data;
+        console.log(alumnos)
+
+      }
       this.usuariosFiltrados = this.usuariosSinFiltrar;
 
       /*
