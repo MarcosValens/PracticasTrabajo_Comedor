@@ -36,7 +36,9 @@ export default async ({Vue, router}) => {
       *
       * TODO - Aqui irá el path para hacer un refresh
       * */
-      const response = await axiosBackend.post('/auth/refresh');
+      const response = await axiosBackend.post('/auth/refresh', {
+        refresh_token: localStorage.getItem("refresh_token")
+      });
 
       /*
       * OK - token renovado
