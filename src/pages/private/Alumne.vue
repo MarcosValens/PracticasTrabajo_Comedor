@@ -29,7 +29,9 @@
     </div>
      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 q-pa-lg">
       <q-card>
+        <q-card-section>
         <div class="text-h4">Dies que ha vingut al menjador</div>
+        </q-card-section>
         <q-card-section class="overflow-auto scrollArea" style="height: 85%">
         <q-list>
         <q-expansion-item v-for="fichaje in allFichajes"
