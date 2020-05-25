@@ -247,10 +247,10 @@
       async guardarListado() {
         const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
-          this.notify("Usuarios marcados correctamente")
+          this.notify("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
         } else {
-          this.notify("Ha habido un error" + response.data)
+          this.notify("Hi ha hagut un error" + response.data)
         }
 
       },
@@ -258,13 +258,13 @@
         /*
         * TODO: hacer peticion al back
         * */
-        this.notify("Usuarios del mismo día de la semana pasada seleccionados")
+        this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
       },
       async seleccionarDiaPasado() {
         /*
         * TODO: hacer peticion al back
         * */
-        this.notify("Usuarios que ayer tambien estuvieron seleccionados")
+        this.notify("Mateixos usuaris que ahir seleccionats")
       },
       notify(message) {
         this.$q.notify({

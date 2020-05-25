@@ -104,7 +104,7 @@
         })
 
         if (response.status === 200) {
-          this.notify("Email eliminado correctamente")
+          this.notify("Email eliminat correctament")
           // Aqui hacemos que el email no se vea mas en la lista
           profesor.email = ""
           this.dataProfesoresFiltered = [];
@@ -153,7 +153,7 @@
 
 
           if (response.status === 200) {
-            this.notify("Email asignado correctamente")
+            this.notify("Email asignat correctament")
           } else {
             this.notify(response.data);
           }

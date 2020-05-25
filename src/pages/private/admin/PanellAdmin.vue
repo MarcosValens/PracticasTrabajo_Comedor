@@ -234,7 +234,7 @@
 
         const response = await this.$axiosCore.put('/private/uploadxml', formData)
         if (response.status === 200) {
-          this.notify("XML  cargado correctamente en la base de datos")
+          this.notify("XML carregat correctament a la base de dades")
         } else {
           this.notify(response.data)
         }

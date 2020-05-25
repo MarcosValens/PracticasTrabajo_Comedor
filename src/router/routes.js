@@ -73,14 +73,20 @@ const routes = [
           const accessToken = url.searchParams.get('access_token');
           const refreshToken = url.searchParams.get('refresh_token');
 
-          const admin = url.searchParams.get('isAdmin');
-          const cuiner = url.searchParams.get('isCuiner');
-          const monitor = url.searchParams.get('isMonitor');
+          const admin = JSON.parse(url.searchParams.get('isAdmin'));
+          const cuiner = JSON.parse(url.searchParams.get('isCuiner'));
+          const monitor = JSON.parse(url.searchParams.get('isMonitor'));
 
-          const userRoles = [];
-          if (cuiner) userRoles.push(process.env.CUINER_ROL)
-          if (monitor) userRoles.push(process.env.MONITOR_ROL)
-          if (admin) userRoles.push(process.env.ADMIN_ROL)
+          const userRoles=[]
+          if (cuiner) {
+            userRoles.push(process.env.CUINER_ROL)
+          }
+          if (monitor) {
+            userRoles.push(process.env.MONITOR_ROL)
+          }
+          if (admin) {
+            userRoles.push(process.env.ADMIN_ROL)
+          }
           localStorage.setItem('rol', JSON.stringify(userRoles));
 
           /*
