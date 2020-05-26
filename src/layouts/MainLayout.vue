@@ -129,7 +129,7 @@
         <q-separator inset=""/>
 
         <q-card-actions align="right">
-          <q-btn label="desar" @click="changePasswd" color="blue-9" unelevated/>
+          <q-btn label="desar" @click="changePasswd" color="blue-9" unelevated v-close-popup/>
           <q-btn label="cancelar" @click="clearPasswordManager" flat color="red-9" v-close-popup/>
         </q-card-actions>
       </q-card>
@@ -217,6 +217,7 @@
       async changePasswd() {
         const response = await this.$axiosCore.put('private/auth/password', this.passwordmanager)
         if (response.status === 200) this.notify("Contrasenya modificada correctament")
+        else this.notify("Ha habido un error")
       },
       clearPasswordManager() {
         this.passwordmanager.oldpasswd = ''
