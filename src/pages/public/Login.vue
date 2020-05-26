@@ -34,26 +34,34 @@
                 </div>
               </q-btn>
             </a>
-            <q-btn flat rounded class="forgottenPwdBtn" color="primary" size="md" label="Ha oblidat la seva contrasenya?" @click="forgottenUserPassword = true"/>
+            <div @click="forgottenUserPassword = true"
+                 class="full-width text-center cursor-pointer text-weight-bold q-mt-md">¿Contrasenya oblidada?
+            </div>
           </q-card-actions>
         </q-card>
-        <q-dialog v-model="forgottenUserPassword">
+
+
+        <q-dialog v-model="forgottenUserPassword" position="bottom" @before-hide="()=>this.forgottenUserEmail=''">
           <q-card>
-            <q-card-section class="bg-primary">
-              <div class="text-h5 text-white">Recuperar contrasenya</div>
-            </q-card-section>
             <q-card-section>
-              <q-input v-model="forgottenUserEmail" square clearable filled type="email" label="Email">
-                <template v-slot:prepend>
-                    <q-icon
-                    name="fas fa-envelope"
-                    class="cursor-pointer text-primary"
+              <div class="text-h6 ">¿No recorda la seva contrasenya?</div>
+            </q-card-section>
+            <q-separator/>
+            <q-card-section>
+              <div class="q-mb-sm">
+                L'hi enviarem un correu de recuperació a:
+              </div>
+              <q-input v-model="forgottenUserEmail" outlined type="email" label="Email">
+                <template v-slot:append>
+                  <q-icon
+                    name="alternate_email"
                   />
                 </template>
               </q-input>
-              </q-card-section>
-            <q-card-actions align="center">
-              <q-btn label="Sol·licitar correu de recuperació" v-close-popup @click="sendEmailPass(forgottenUserEmail)"/>
+            </q-card-section>
+            <q-card-actions class="q-px-md">
+              <q-btn color="primary" class="full-width" label="Enviar correu de recuperació" v-close-popup
+                     @click="sendEmailPass(forgottenUserEmail)"/>
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -135,10 +143,5 @@
     background-repeat: no-repeat;
     background-position: 100% 100%;
     background-size: 75vw;
-  }
-
-  .forgottenPwdBtn{
-    margin-top: 2%;
-    width: 100%;
   }
 </style>
