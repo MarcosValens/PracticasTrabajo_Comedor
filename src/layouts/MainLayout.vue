@@ -235,6 +235,8 @@
       /**
        * Cogemos la informacion propia del usuario logueado
        */
+      this.roles = JSON.parse(localStorage.getItem('rol'))
+
       const response = await this.$axiosCore.get("/private/usuario/me");
       console.log(response)
       if (response.status === 200) {
