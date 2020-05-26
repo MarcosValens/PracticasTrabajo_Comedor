@@ -41,7 +41,7 @@
         </q-card>
 
 
-        <q-dialog v-model="forgottenUserPassword" position="bottom" @before-hide="()=>this.forgottenUserEmail=''">
+        <q-dialog v-model="forgottenUserPassword" @before-hide="()=>this.forgottenUserEmail=''">
           <q-card>
             <q-card-section>
               <div class="text-h6 ">¿No recorda la seva contrasenya?</div>
