@@ -3,7 +3,7 @@
 
     <div class="flex justify-between q-pa-sm">
       <div class="text-h4 ">Pasar llista</div>
-      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Selecciones comunes"
+      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Seleccions comunes"
              icon="fas fa-angle-down">
         <q-menu fit>
           <q-list style="min-width: 100px">
@@ -71,7 +71,7 @@
         <q-card class="fixed">
           <q-card-section>
             <div class="text-h6">
-              Selecciones comunes
+              Seleccions comunes
             </div>
           </q-card-section>
           <q-separator inset=""/>
@@ -261,15 +261,7 @@
       }
       ,
       orderUsuaris(users) {
-        return users.sort((a, b) => {
-          if (a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
-            return -1;
-          }
-          if (a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
-            return 1;
-          }
-          return 0;
-        });
+        return users.sort((a, b) => a.nom.localeCompare(b.nom, 'ca',{ sensitivity: 'base' }))
       }
       ,
       getSelectedString() {
