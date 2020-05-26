@@ -62,7 +62,7 @@ export default {
     });
     this.alumnes = this.orderAlumnes(this.alumnes);
     this.alumnesFiltered = this.alumnes;
-     const responseGrups = await this.$axiosCore.get( "/private/grupos");
+    const responseGrups = await this.$axiosCore.get("/private/grupos");
     this.grups = responseGrups.data.map(grup => {
       return grup.curs.descripcio + "-" + grup.nom;
     });
