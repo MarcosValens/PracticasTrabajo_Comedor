@@ -30,7 +30,7 @@
           row-key="codi"
           :selected.sync="usuariosSeleccionados"
           rows-per-page-label="Usuarios por fila"
-          :rows-per-page-options="[5,12,0]"
+          :pagination.sync="myPagination"
           separator="cell"
         >
           <template v-slot:top class="bg-indigo">
@@ -39,8 +39,12 @@
                         v-model="tipoUsuarioSeleccionado"
                         :options="optionsTipoUsuario" label="Tipo de usuario"
                         @input="filterUsuarios(filtroDeUsuarios)"
-                        :disable="soloPuedeFicharAlumnos"
-              />
+                        :readonly="soloPuedeFicharAlumnos"
+              >
+
+                <q-tooltip v-if="soloPuedeFicharAlumnos">Nomes cuiners poden marcar altres usuaris que alumnes
+                </q-tooltip>
+              </q-select>
 
               <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
                        v-model="filtroDeUsuarios" placeholder="Cercar"
@@ -98,28 +102,64 @@
 <script>
   export default {
     name: "PagesLlista",
-    created() {
+    async created() {
       /*
       * TODO RECUPERAR AQUI TODOS LOS USUARIOS QUE NECESITEMOS
       * */
 
+
+      /*
+      * Cogemos alumnos
+      * */
+      const promise = []
+      promise.push(this.$axiosCore.get('/private/alumne/comedor/listado'))
+      promise.push(this.$axiosCore.get('/private/professor/comedor/listado'))
+
+      const responses = await Promise.all(promise)
+
+      if (responses[0].status === 200) {
+        responses[0].data.forEach(alumno => {
+          alumno.rol = 'Alumne'
+          this.usuariosSinFiltrar.push(alumno)
+        });
+      }
+      if (responses[1].status === 200) {
+        responses[1].data.forEach(profe => {
+          profe.rol = 'Professor'
+          this.usuariosSinFiltrar.push(profe)
+        });
+      }
+
+      this.usuariosSinFiltrar = this.orderUsuaris(this.usuariosSinFiltrar)
       this.usuariosFiltrados = this.usuariosSinFiltrar;
 
       /*
       * TODO: QUE ESTO VENGA DEL LOCALSTORAGE UNA VEZ LOS ROLES EN EL LOGUIN ESTEN IMPLEMENTADOS
       * */
-      this.rolLogued = this.cuinerRol
-      if (this.rolLogued === this.monitorRol) {
+      this.rolesLogued = JSON.parse(localStorage.getItem("rol"))
+
+      let isCuiner = false;
+
+      this.rolesLogued.forEach(rol => {
+        if (rol === process.env.CUINER_ROL) {
+          isCuiner = true;
+        }
+      })
+
+      if (!isCuiner) {
         this.tipoUsuarioSeleccionado = 'Alumne'
-        this.soloPuedeFicharAlumnos = this.rolLogued === this.monitorRol;
+        this.soloPuedeFicharAlumnos = true
         this.filterUsuarios(this.filtroDeUsuarios)
       }
 
     },
     data() {
       return {
-        rolLogued: '',
-        cuinerRol: process.env.CUINER_ROl,
+        myPagination: {
+          rowsPerPage: 11
+        },
+        rolesLogued: [],
+        cuinerRol: process.env.CUINER_ROL,
         monitorRol: process.env.MONITOR_ROL,
         soloPuedeFicharAlumnos: false,
         fabPos: [18, 18],
@@ -170,125 +210,23 @@
         /*
         * TODO ESTOS USUARIOS HAN DE VENIR DE BBDD
         * */
-        usuariosSinFiltrar: [
-          {
-            codi: 2131223,
-            nom: "Xavi",
-            ap1: "Doe",
-            ap2: "Doe",
-            rol: "Professor"
-          },
-          {
-            codi: 213223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 3131223,
-            nom: "Xavi",
-            ap1: "Doe",
-            ap2: "Doe",
-            rol: "Professor"
-          },
-          {
-            codi: 413223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 5131223,
-            nom: "Xavi",
-            ap1: "Doe",
-            ap2: "Doe",
-            rol: "Professor"
-          },
-          {
-            codi: 613223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 7131223,
-            nom: "Xavi",
-            ap1: "Doe",
-            ap2: "Doe",
-            rol: "Professor"
-          },
-          {
-            codi: 813223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 9131345223,
-            nom: "Xavi",
-            ap1: "Doe",
-            ap2: "Doe",
-            rol: "Professor"
-          },
-          {
-            codi: 1013453223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 101353223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 105613223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 31013223,
-            nom: "Roberto",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10135223,
-            nom: "Miguel",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10136223,
-            nom: "Miguel",
-            ap1: "Monteiro ",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-          {
-            codi: 10913223,
-            nom: "Miguel Claveri",
-            ap1: "Caprio",
-            ap2: "Doe",
-            rol: "Alumne"
-          },
-        ],
-        usuariosFiltrados: null
+        usuariosSinFiltrar: [],
+        usuariosFiltrados: []
       };
     },
     methods: {
       rowclick: function (evt, row) {
+      },
+      orderUsuaris(users) {
+        return users.sort((a, b) => {
+          if (a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
+            return -1;
+          }
+          if (a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
       },
       getSelectedString() {
         const addS = this.usuariosSeleccionados.length > 1 ? "s" : "";
@@ -309,10 +247,10 @@
       async guardarListado() {
         const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
-          this.notify("Usuarios marcados correctamente")
+          this.notify("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
         } else {
-          this.notify("Ha habido un error" + response.data)
+          this.notify("Hi ha hagut un error" + response.data)
         }
 
       },
@@ -320,13 +258,13 @@
         /*
         * TODO: hacer peticion al back
         * */
-        this.notify("Usuarios del mismo día de la semana pasada seleccionados")
+        this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
       },
       async seleccionarDiaPasado() {
         /*
         * TODO: hacer peticion al back
         * */
-        this.notify("Usuarios que ayer tambien estuvieron seleccionados")
+        this.notify("Mateixos usuaris que ahir seleccionats")
       },
       notify(message) {
         this.$q.notify({

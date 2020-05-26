@@ -27,7 +27,7 @@
       :content-class="$q.screen.height>489?'bg-grey-2 column justify-between':'bg-grey-2'"
     >
       <q-list>
-        <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link">
+        <q-item clickable v-ripple v-for="link in links" :key="link.title" :to="link.link" v-if="canAccess(link)">
           <q-item-section avatar>
             <q-icon :name="link.icon"/>
           </q-item-section>
@@ -94,52 +94,71 @@
 
     components: {},
 
+
     data() {
       return {
         links: [
           {
             title: "Inici",
             icon: "home",
-            link: "/private/inici"
+            link: "/private/inici",
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL, process.env.ADMIN_ROL]
           },
           {
             title: "Alumnes",
             icon: "school",
             link: "/private/alumnes",
-            grantedRoles: []
-          },
-          {
-            title: "Professors",
-            icon: "people",
-            link: "/private/professors"
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Dies",
             icon: "wb_sunny",
-            link: "/private/dies"
-          },
-          {
-            title: "Usuaris",
-            icon: "account_circle",
-            link: "/private/usuaris"
+            link: "/private/dies",
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Pasar llista",
             icon: "list_alt",
-            link: "/private/llista"
+            link: "/private/llista",
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Panell d'administració",
-            icon: "fas fa-crown",
-            link: "/admin/panel"
-          }
+            icon: "fas fa-user-shield",
+            link: "/admin/panel",
+            grantedRoles: [process.env.ADMIN_ROL]
+          },
+          {
+            title: "Usuaris",
+            icon: "account_circle",
+            link: "/admin/usuaris",
+            grantedRoles: [process.env.ADMIN_ROL]
+          },
+          {
+            title: "Professors",
+            icon: "people",
+            link: "/admin/professors",
+            grantedRoles: [process.env.ADMIN_ROL]
+          },
         ],
         drawer: false,
         miniState: false,
-        rol: ''
+        roles: []
       };
     },
+
     methods: {
+      canAccess(link) {
+        const granted = link.grantedRoles;
+
+        let result = false;
+        this.roles.forEach(rol => {
+          granted.forEach(aceptado => {
+            if (rol === aceptado) result = true;
+          })
+        })
+        return result;
+      },
       drawerClick(e) {
         if (this.miniState) {
           this.miniState = false;
@@ -154,7 +173,7 @@
       }
     },
     created() {
-      //this.rol = localStorage.getItem('rol').toLowerCase();
+      this.roles = JSON.parse(localStorage.getItem('rol'));
     }
   };
 </script>

@@ -1,10 +1,11 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md ">
+
     <q-table
       class="full-width" :data="dataProfesoresFiltered" :columns="columnsProfesores" row-key="name" separator="cell"
       :pagination.sync="myPagination"
     >
-      <template v-slot:top class="bg-indigo">
+      <template v-slot:top>
         <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
           <div class="text-h5">Professors</div>
           <q-input outlined dense debounce="300" placeholder="Cercar" @input="filterProfesor"
@@ -13,7 +14,6 @@
               <q-icon name="search"/>
             </template>
           </q-input>
-
         </div>
       </template>
 
@@ -37,6 +37,7 @@
                        v-show="(props.row.email!==undefined && props.row.email!=='')"/>
               </template>
             </q-input>
+
           </q-td>
         </q-tr>
       </template>
@@ -53,7 +54,11 @@
       this.$q.loading.show()
       const response = await this.$axiosCore.get('/private/professor');
       if (response.status === 200) {
-        this.dataProfesores = response.data;
+        this.dataProfesores = this.orderProfesors(response.data);
+        this.dataProfesores = this.dataProfesores.map(profesor => {
+          if (profesor.usuariApp !== null) profesor.email = profesor.usuariApp.email
+          return profesor;
+        })
         this.dataProfesoresFiltered = this.dataProfesores;
       } else {
         this.notify(response.data)
@@ -63,7 +68,7 @@
     data() {
       return {
         myPagination: {
-          rowsPerPage: 10
+          rowsPerPage: 12
         },
         columnsProfesores: [
           {name: 'username', align: 'center', label: 'Nom d\'usuari', field: row => row.username, sortable: true},
@@ -90,9 +95,7 @@
     methods: {
       async removeEmailUser(profesor) {
         const codigo = profesor.codi;
-
-        // Aqui hacemos que el email no se vea mas en la lista
-        profesor.email = undefined
+        console.log(profesor)
 
         const response = await this.$axiosCore.delete('/admin/professor/email', {
           data: {
@@ -101,10 +104,25 @@
         })
 
         if (response.status === 200) {
-          this.notify("Email eliminado correctamente")
+          this.notify("Email eliminat correctament")
+          // Aqui hacemos que el email no se vea mas en la lista
+          profesor.email = ""
+          this.dataProfesoresFiltered = [];
+          this.dataProfesoresFiltered = this.orderProfesors(this.dataProfesores)
         } else {
           this.notify(response.data);
         }
+      },
+      orderProfesors(profesores) {
+        return profesores.sort((a, b) => {
+          if (a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
+            return -1;
+          }
+          if (a.nom[0].toLowerCase() > b.nom[0].toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
       },
       notify(message) {
         this.$q.notify({
@@ -123,17 +141,19 @@
         })
       },
       async asignarEmail(profesor) {
+        console.log(profesor)
         const codigo = profesor.codi;
         const email = profesor.email;
         if (codigo && email) {
 
           const response = await this.$axiosCore.put('/admin/professor/email', {
             email: email,
-            codigo: codigo
+            codi: codigo
           })
 
+
           if (response.status === 200) {
-            this.notify("Email asignado correctamente")
+            this.notify("Email asignat correctament")
           } else {
             this.notify(response.data);
           }
