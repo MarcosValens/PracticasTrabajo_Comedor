@@ -46,13 +46,22 @@
                 </q-tooltip>
               </q-select>
 
-              <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':''" outlined dense debounce="300"
-                       v-model="filtroDeUsuarios" placeholder="Cercar"
-                       @input="filterUsuarios">
-                <template v-slot:append>
-                  <q-icon name="search"/>
-                </template>
-              </q-input>
+              <div class="row">
+
+                <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':'q-mr-sm'" outlined dense debounce="300"
+                         v-model="filtroDeUsuarios" placeholder="Cercar"
+                         @input="filterUsuarios">
+                  <template v-slot:append>
+                    <q-icon name="search"/>
+                  </template>
+                </q-input>
+                <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
+                          v-model="grupoSeleccionado"
+                          :options="grups" label="Grup"
+                          :readonly="tipoUsuarioSeleccionado!=='Alumne'"
+                          @input="filterUsuarios"/>
+              </div>
+
             </div>
           </template>
 
@@ -118,11 +127,28 @@
       const responses = await Promise.all(promise)
 
       if (responses[0].status === 200) {
+
+
         responses[0].data.forEach(alumno => {
-          alumno.rol = 'Alumne'
-          this.usuariosSinFiltrar.push(alumno)
-        });
+          const newAlumno = {
+            nom: alumno.nom,
+            ap1: alumno.ap1,
+            ap2: alumno.ap2,
+            grup: "",
+            codi: alumno.codi,
+          }
+          let grupo;
+          if (alumno.grup != null && typeof alumno.grup === 'object') {
+            grupo = alumno.grup.curs.descripcio + "-" + alumno.grup.nom
+          } else if (alumno.grup != null && typeof alumno.grup != 'object') {
+            grupo = alumno.grup;
+          }
+          newAlumno.rol = 'Alumne'
+          newAlumno.grup = grupo;
+          this.usuariosSinFiltrar.push(newAlumno)
+        })
       }
+
       if (responses[1].status === 200) {
         responses[1].data.forEach(profe => {
           profe.rol = 'Professor'
@@ -133,9 +159,13 @@
       this.usuariosSinFiltrar = this.orderUsuaris(this.usuariosSinFiltrar)
       this.usuariosFiltrados = this.usuariosSinFiltrar;
 
-      /*
-      * TODO: QUE ESTO VENGA DEL LOCALSTORAGE UNA VEZ LOS ROLES EN EL LOGUIN ESTEN IMPLEMENTADOS
-      * */
+      const responseGrups = await this.$axiosCore.get("/private/grupos");
+      this.grups = responseGrups.data.map(grup => {
+        return grup.curs.descripcio + "-" + grup.nom;
+      });
+      this.grups.unshift("Tots");
+
+
       this.rolesLogued = JSON.parse(localStorage.getItem("rol"))
 
       let isCuiner = false;
@@ -155,6 +185,8 @@
     },
     data() {
       return {
+        grups: [],
+        grupoSeleccionado: "Tots",
         myPagination: {
           rowsPerPage: 11
         },
@@ -204,6 +236,15 @@
             field: row => row.rol,
             format: val => `${val}`,
             sortable: true
+          },
+          {
+            name: "grup",
+            required: false,
+            label: "Grupo (Alumnos)",
+            align: "left",
+            field: row => row.grup,
+            format: val => `${val}`,
+            sortable: true
           }
         ],
 
@@ -213,10 +254,12 @@
         usuariosSinFiltrar: [],
         usuariosFiltrados: []
       };
-    },
+    }
+    ,
     methods: {
       rowclick: function (evt, row) {
-      },
+      }
+      ,
       orderUsuaris(users) {
         return users.sort((a, b) => {
           if (a.nom[0].toLowerCase() < b.nom[0].toLowerCase()) {
@@ -227,23 +270,33 @@
           }
           return 0;
         });
-      },
+      }
+      ,
       getSelectedString() {
         const addS = this.usuariosSeleccionados.length > 1 ? "s" : "";
         return this.usuariosSeleccionados.length === 0
           ? ""
           : `${this.usuariosSeleccionados.length} usuario${addS} seleccionado${addS} de ${this.usuariosSinFiltrar.length}`;
-      },
+      }
+      ,
       filterUsuarios() {
+        console.log("HEY THERE !")
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
         this.usuariosFiltrados = this.usuariosSinFiltrar.filter(user => {
           const nombreCompleto = user.nom + ' ' + user.ap1 + ' ' + user.ap2
 
           if (this.tipoUsuarioSeleccionado.toLowerCase() !== 'todos' && this.tipoUsuarioSeleccionado.toLowerCase() !== user.rol.toLowerCase()) return false
-          return nombreCompleto.toLowerCase().includes(textoFiltro);
 
+          if (this.tipoUsuarioSeleccionado.toLowerCase() === 'alumne') {
+            if (this.grupoSeleccionado.toLowerCase() !== 'tots' && this.grupoSeleccionado.toLowerCase() !== user.grup.toLowerCase()) return false
+
+            return nombreCompleto.toLowerCase().includes(textoFiltro);
+          } else {
+            return nombreCompleto.toLowerCase().includes(textoFiltro);
+          }
         })
-      },
+      }
+      ,
       async guardarListado() {
         const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
@@ -253,19 +306,22 @@
           this.notify("Hi ha hagut un error" + response.data)
         }
 
-      },
+      }
+      ,
       async seleccionarSemanaPasada() {
         /*
         * TODO: hacer peticion al back
         * */
         this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
-      },
+      }
+      ,
       async seleccionarDiaPasado() {
         /*
         * TODO: hacer peticion al back
         * */
         this.notify("Mateixos usuaris que ahir seleccionats")
-      },
+      }
+      ,
       notify(message) {
         this.$q.notify({
           message: message,
@@ -274,5 +330,6 @@
         })
       }
     }
-  };
+  }
+  ;
 </script>
