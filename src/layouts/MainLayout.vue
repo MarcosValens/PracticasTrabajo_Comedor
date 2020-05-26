@@ -102,7 +102,7 @@
             title: "Inici",
             icon: "home",
             link: "/private/inici",
-            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL, process.env.ADMIN_ROL]
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
           {
             title: "Alumnes",
@@ -121,24 +121,6 @@
             icon: "list_alt",
             link: "/private/llista",
             grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
-          },
-          {
-            title: "Panell d'administració",
-            icon: "fas fa-user-shield",
-            link: "/admin/panel",
-            grantedRoles: [process.env.ADMIN_ROL]
-          },
-          {
-            title: "Usuaris",
-            icon: "account_circle",
-            link: "/admin/usuaris",
-            grantedRoles: [process.env.ADMIN_ROL]
-          },
-          {
-            title: "Professors",
-            icon: "people",
-            link: "/admin/professors",
-            grantedRoles: [process.env.ADMIN_ROL]
           },
         ],
         drawer: false,

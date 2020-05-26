@@ -33,34 +33,6 @@ const routes = [
     }
   },
   {
-    path: '/admin',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      {path: "", redirect: 'panel'},
-      {path: 'panel', component: () => import('pages/private/admin/PanellAdmin.vue')},
-      {path: 'professor/:id', component: () => import('pages/private/admin/Professor.vue')},
-      {path: 'usuari/:id', component: () => import('pages/private/admin/Usuari.vue')},
-      {path: 'professors', component: () => import('pages/private/admin/Professors.vue')},
-      {path: 'usuaris', component: () => import('pages/private/admin/Usuaris.vue')},
-    ],
-    beforeEnter: (to, from, next) => {
-      const token = localStorage.getItem('access_token');
-
-      // TODO MODIFICAR ESTO CUANDO HAYA ROLES
-      // const rol = localStorage.getItem('rol');
-      // if (!rol) {
-      //   next('/login');
-      // }
-
-      //if (!token || rol.toLowerCase() !== process.env.ADMIN_ROL.toLowerCase()){
-      if (!token) {
-        next('/login');
-      } else {
-        next();
-      }
-    }
-  },
-  {
     path: '/login',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
@@ -73,7 +45,6 @@ const routes = [
           const accessToken = url.searchParams.get('access_token');
           const refreshToken = url.searchParams.get('refresh_token');
 
-          const admin = JSON.parse(url.searchParams.get('isAdmin'));
           const cuiner = JSON.parse(url.searchParams.get('isCuiner'));
           const monitor = JSON.parse(url.searchParams.get('isMonitor'));
 
@@ -83,9 +54,6 @@ const routes = [
           }
           if (monitor) {
             userRoles.push(process.env.MONITOR_ROL)
-          }
-          if (admin) {
-            userRoles.push(process.env.ADMIN_ROL)
           }
           localStorage.setItem('rol', JSON.stringify(userRoles));
 
