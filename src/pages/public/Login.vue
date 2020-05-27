@@ -34,9 +34,37 @@
                 </div>
               </q-btn>
             </a>
+            <div @click="forgottenUserPassword = true"
+                 class="full-width text-center cursor-pointer text-weight-bold q-mt-md">¿Contrasenya oblidada?
+            </div>
           </q-card-actions>
-
         </q-card>
+
+
+        <q-dialog v-model="forgottenUserPassword" @before-hide="()=>this.forgottenUserEmail=''">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6 ">¿No recorda la seva contrasenya?</div>
+            </q-card-section>
+            <q-separator/>
+            <q-card-section>
+              <div class="q-mb-sm">
+                L'hi enviarem un correu de recuperació a:
+              </div>
+              <q-input v-model="forgottenUserEmail" outlined type="email" label="Email">
+                <template v-slot:append>
+                  <q-icon
+                    name="alternate_email"
+                  />
+                </template>
+              </q-input>
+            </q-card-section>
+            <q-card-actions class="q-px-md">
+              <q-btn color="primary" class="full-width" label="Enviar correu de recuperació" v-close-popup
+                     @click="sendEmailPass(forgottenUserEmail)"/>
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </div>
     </div>
   </q-page>
@@ -53,7 +81,9 @@
           email: '',
           password: '',
         },
-        verContrasena: false
+        verContrasena: false,
+        forgottenUserPassword: false,
+        forgottenUserEmail: ''
       }
     },
     methods: {
@@ -74,7 +104,6 @@
           recived.forEach(rol => {
             if (rol === "cuiner") userRoles.push(process.env.CUINER_ROL)
             if (rol === "monitor") userRoles.push(process.env.MONITOR_ROL)
-            if (rol === "admin") userRoles.push(process.env.ADMIN_ROL)
           })
 
           localStorage.setItem('rol', JSON.stringify(userRoles));
@@ -91,6 +120,9 @@
           color: 'primary',
           position: 'bottom-left'
         })
+      },
+      sendEmailPass(email){
+        console.log(email);
       }
     }
   }
