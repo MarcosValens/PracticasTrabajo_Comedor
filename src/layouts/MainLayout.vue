@@ -134,6 +134,12 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-ajax-bar
+      ref="bar"
+      position="bottom"
+      color="indigo-10"
+      size="3px"
+    />
   </q-layout>
 </template>
 

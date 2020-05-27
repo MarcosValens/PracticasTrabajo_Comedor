@@ -14,8 +14,7 @@ const routes = [
       {path: 'alumnes', component: () => import('pages/private/Alumnes.vue')},
       {path: 'dies', component: () => import('pages/private/Dies.vue')},
       {path: 'llista', component: () => import('pages/private/Llista.vue')},
-      {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')},
-      {path: 'dia/:id', component: () => import('pages/private/Dia.vue')},
+      {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')}
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
@@ -78,7 +77,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/private/Error404.vue')
+    component: () => import('pages/errors/Error404.vue')
   })
 }
 
