@@ -43,7 +43,10 @@
             <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':'q-mr-sm'" dense style="min-width: 200px" outlined
                       v-model="tipoUsuarioSeleccionado"
                       :options="optionsTipoUsuario" label="Tipo de usuario"
-                      @input="filterUsuarios(filtroDeUsuarios)"
+                      @input="()=>{
+                        this.filterUsuarios(filtroDeUsuarios)
+                        if (this.tipoUsuarioSeleccionado.toLowerCase()!=='alumne') this.grupoSeleccionado='Tots'
+                      }"
             />
             <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':'q-mr-sm'" dense style="min-width: 200px" outlined
                       v-model="grupoSeleccionado"
