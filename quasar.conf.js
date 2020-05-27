@@ -89,7 +89,7 @@ module.exports = function (ctx) {
         MONITOR_ROL: JSON.stringify("monitor"),
         URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')
       } : {
-        CORE_URL: JSON.stringify("https://menjador.esliceu.com/api"),
+        CORE_URL: JSON.stringify("https://api.esliceu.com"),
         CUINER_ROL: JSON.stringify("cuiner"),
         MONITOR_ROL: JSON.stringify("monitor"),
         URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')
