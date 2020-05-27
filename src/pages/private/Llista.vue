@@ -261,7 +261,7 @@
       }
       ,
       orderUsuaris(users) {
-        return users.sort((a, b) => a.nom.localeCompare(b.nom, 'ca',{ sensitivity: 'base' }))
+        return users.sort((a, b) => a.nom.localeCompare(b.nom, 'ca', {sensitivity: 'base'}))
       }
       ,
       getSelectedString() {
@@ -269,10 +269,8 @@
         return this.usuariosSeleccionados.length === 0
           ? ""
           : `${this.usuariosSeleccionados.length} usuario${addS} seleccionado${addS} de ${this.usuariosSinFiltrar.length}`;
-      }
-      ,
+      },
       filterUsuarios() {
-        console.log("HEY THERE !")
         const textoFiltro = this.filtroDeUsuarios.toLowerCase();
         this.usuariosFiltrados = this.usuariosSinFiltrar.filter(user => {
           const nombreCompleto = user.nom + ' ' + user.ap1 + ' ' + user.ap2
@@ -287,8 +285,7 @@
             return nombreCompleto.toLowerCase().includes(textoFiltro);
           }
         })
-      }
-      ,
+      },
       async guardarListado() {
         const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
