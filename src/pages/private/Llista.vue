@@ -298,24 +298,28 @@
       }
       ,
       async seleccionarSemanaPasada() {
-        /*
-        * TODO: hacer peticion al back
-        * */
-        this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
+        const response = await this.$axiosCore.get("/private/comedor/comun/ultima/semana")
+        if (response.status === 200) {
+          this.extractAlumnesAndProfesSeleccionados(response.data)
+          this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
+        }
       }
       ,
       async seleccionarDiaPasado() {
         const response = await this.$axiosCore.get("/private/comedor/comun/ayer")
         if (response.status === 200) {
-          response.data.alumnes.forEach(alumne => {
-            this.usuariosSeleccionados.push(alumne)
-          })
-
-
+          this.extractAlumnesAndProfesSeleccionados(response.data)
           this.notify("Mateixos usuaris que ahir seleccionats")
         }
-      }
-      ,
+      },
+      extractAlumnesAndProfesSeleccionados(data) {
+        data.alumnes.forEach(alumne => {
+          this.usuariosSeleccionados.push(alumne)
+        })
+        data.professors.forEach(profe => {
+          this.usuariosSeleccionados.push(profe)
+        })
+      },
       notify(message) {
         this.$q.notify({
           message: message,
