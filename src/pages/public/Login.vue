@@ -114,15 +114,17 @@
           this.notify('Email o contrasenya incorrectes')
         }
       },
-      notify(message){
+      notify(message) {
         this.$q.notify({
           message: message,
           color: 'primary',
           position: 'bottom-left'
         })
       },
-      sendEmailPass(email){
-        console.log(email);
+      async sendEmailPass(email) {
+        const response = await this.$axiosCore.post("/auth/recovery", {
+          email: email
+        })
       }
     }
   }
