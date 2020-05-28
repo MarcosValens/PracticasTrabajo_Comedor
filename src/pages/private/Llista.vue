@@ -305,10 +305,15 @@
       }
       ,
       async seleccionarDiaPasado() {
-        /*
-        * TODO: hacer peticion al back
-        * */
-        this.notify("Mateixos usuaris que ahir seleccionats")
+        const response = await this.$axiosCore.get("/private/comedor/comun/ayer")
+        if (response.status === 200) {
+          response.data.alumnes.forEach(alumne => {
+            this.usuariosSeleccionados.push(alumne)
+          })
+
+
+          this.notify("Mateixos usuaris que ahir seleccionats")
+        }
       }
       ,
       notify(message) {
