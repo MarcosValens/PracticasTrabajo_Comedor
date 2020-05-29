@@ -1,7 +1,7 @@
 <template>
   <q-page
     :class="$q.screen.lt.md?'bg-sm-image window-height window-width row justify-center items-center':'bg-lg-image window-height window-width row justify-center items-center'"
-    >
+  >
     <div class="column">
       <div class="row">
         <h5 class="text-h5  q-my-md">Menjador - Es Liceu</h5>
@@ -9,17 +9,17 @@
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
-              <q-input class="q-my-sm" outlined  v-model="login.email" type="email" label="email" />
-              <q-input class="q-my-sm" outlined  v-model="login.password"  label="password"
-                       :type="!verContrasena ? 'password' : 'text'"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    :name="!verContrasena ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="verContrasena = !verContrasena"
-                  />
-                </template>
+            <q-input class="q-my-sm" outlined v-model="login.email" type="email" label="email"/>
+            <q-input class="q-my-sm" outlined v-model="login.password" label="password"
+                     :type="!verContrasena ? 'password' : 'text'"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="!verContrasena ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="verContrasena = !verContrasena"
+                />
+              </template>
             </q-input>
           </q-card-section>
           <q-card-actions class="q-px-md">
@@ -74,7 +74,7 @@
 <script>
   export default {
     name: 'Login',
-    data () {
+    data() {
       return {
         urlLoginOauth: process.env.CORE_URL + process.env.URI_OAUTH_GOOGLE,
         login: {
@@ -99,7 +99,7 @@
           localStorage.setItem("refresh_token", refresh)
 
           const recived = JSON.parse(responseLogin.data.rol);
-          console.log("recived",recived);
+          console.log("recived", recived);
           const userRoles = [];
           recived.forEach(rol => {
             if (rol === "cuiner") userRoles.push(process.env.CUINER_ROL)
@@ -114,15 +114,21 @@
           this.notify('Email o contrasenya incorrectes')
         }
       },
-      notify(message){
+      notify(message) {
         this.$q.notify({
           message: message,
           color: 'primary',
           position: 'bottom-left'
         })
       },
-      sendEmailPass(email){
-        console.log(email);
+      async sendEmailPass(email) {
+        const response = await this.$axiosCore.post("/auth/recovery", {
+          email: email
+        })
+        if (response.status === 200) {
+          this.notify("Un email de confirmació ha sigut enviat al teu correu electrònic")
+          this.forgottenUserEmail = ''
+        }
       }
     }
   }
@@ -132,12 +138,14 @@
   .q-card {
     width: 360px;
   }
+
   .bg-lg-image {
     background-image: url("assets/esliceu-logo.png");
     background-repeat: no-repeat;
     background-position: 95% 100%;
     background-size: 13vw;
   }
+
   .bg-sm-image {
     background-image: url("assets/esliceu-logo.png");
     background-repeat: no-repeat;

@@ -1,8 +1,23 @@
 const routes = [
   {
     path: '/',
+    component: () => import('layouts/LoginLayout.vue'),
     children: [
       {path: "", redirect: '/private'},
+      {
+        path: 'change/password', component: () => import('pages/public/Recovery.vue'),
+        beforeEnter: (to, from, next) => {
+          const url = new URL(location);
+          const token = url.searchParams.get('recovery_token');
+          sessionStorage.setItem('recovery_token_passwd', token);
+          /*
+          * Limpiar url de params
+          * */
+
+          window.history.pushState({}, document.title, "/#/change/password");
+          next()
+        }
+      },
     ]
   },
   {
@@ -12,18 +27,14 @@ const routes = [
       {path: "", redirect: 'inici'},
       {path: 'inici', component: () => import('pages/private/Index.vue')},
       {path: 'alumnes', component: () => import('pages/private/Alumnes.vue')},
-      {path: 'dies', component: () => import('pages/private/Dies.vue')},
-      {path: 'llista', component: () => import('pages/private/Llista.vue')},
+      {path: 'dies', component: () => import('pages/private/Dies.vue')}, {
+        path: 'llista',
+        component: () => import('pages/private/Llista.vue')
+      },
       {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')}
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
-      // TODO MODIFICAR ESTO CUANDO HAYA ROLES
-      // const rol = localStorage.getItem('rol');
-      // if (!rol) {
-      //   next('/login');
-      // }
-
       if (!token) {
         next('/login');
       } else {
@@ -47,7 +58,7 @@ const routes = [
           const cuiner = JSON.parse(url.searchParams.get('isCuiner'));
           const monitor = JSON.parse(url.searchParams.get('isMonitor'));
 
-          const userRoles=[]
+          const userRoles = []
           if (cuiner) {
             userRoles.push(process.env.CUINER_ROL)
           }
@@ -68,7 +79,7 @@ const routes = [
           window.history.pushState({}, document.title, "/");
           next('/private/inici');
         }
-      },
+      }
     ]
   }
 ];
