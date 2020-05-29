@@ -1,16 +1,21 @@
 const routes = [
   {
     path: '/',
+    component: () => import('layouts/LoginLayout.vue'),
     children: [
       {path: "", redirect: '/private'},
       {
-        path: "login/recovery",
+        path: 'change/password', component: () => import('pages/public/Recovery.vue'),
         beforeEnter: (to, from, next) => {
           const url = new URL(location);
-          const recovery = url.searchParams.get('recovery_token');
-          localStorage.setItem("recovery_token_passwd", recovery)
-          window.history.pushState({}, document.title, "/");
-          next();
+          const token = url.searchParams.get('recovery_token');
+          sessionStorage.setItem('recovery_token_passwd', token);
+          /*
+          * Limpiar url de params
+          * */
+
+          window.history.pushState({}, document.title, "/#/change/password");
+          next()
         }
       },
     ]
@@ -30,12 +35,6 @@ const routes = [
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
-      // TODO MODIFICAR ESTO CUANDO HAYA ROLES
-      // const rol = localStorage.getItem('rol');
-      // if (!rol) {
-      //   next('/login');
-      // }
-
       if (!token) {
         next('/login');
       } else {
@@ -80,7 +79,7 @@ const routes = [
           window.history.pushState({}, document.title, "/");
           next('/private/inici');
         }
-      },
+      }
     ]
   }
 ];
