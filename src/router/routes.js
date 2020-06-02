@@ -31,7 +31,8 @@ const routes = [
         path: 'llista',
         component: () => import('pages/private/Llista.vue')
       },
-      {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')}
+      {path: 'alumne/:id', component: () => import('pages/private/Alumne.vue')},
+      {path: 'exportacio', component: () => import('pages/private/ExportacioDades.vue')}
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem('access_token');
