@@ -205,6 +205,12 @@
             link: "/private/llista",
             grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
           },
+          {
+            title: "Exportar dades",
+            icon: "picture_as_pdf",
+            link: "/private/exportacio",
+            grantedRoles: [process.env.MONITOR_ROL, process.env.CUINER_ROL]
+          },
         ],
         drawer: false,
         miniState: false,
