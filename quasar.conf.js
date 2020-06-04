@@ -87,12 +87,12 @@ module.exports = function (ctx) {
         CORE_URL: JSON.stringify("http://localhost:8080"),
         CUINER_ROL: JSON.stringify("cuiner"),
         MONITOR_ROL: JSON.stringify("monitor"),
-        URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')
+        URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize?Origin=menjador')
       } : {
         CORE_URL: JSON.stringify("https://api.esliceu.com"),
         CUINER_ROL: JSON.stringify("cuiner"),
         MONITOR_ROL: JSON.stringify("monitor"),
-        URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize')
+        URI_OAUTH_GOOGLE: JSON.stringify('/oauth2/authorize?Origin=menjador')
       }
     },
 
