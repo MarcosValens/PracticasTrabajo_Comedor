@@ -258,21 +258,28 @@
       },
       async changePasswd() {
         const response = await this.$axiosCore.put('private/auth/password', this.passwordmanager)
-        if (response.status === 200) this.notify("Contrasenya modificada correctament")
-        else this.notify("Ha habido un error")
+        if (response.status === 200) this.notifyPositive("Contrasenya modificada correctament")
+        else this.notifyNegative("Ha habido un error")
       },
       clearPasswordManager() {
         this.passwordmanager.oldpasswd = ''
         this.passwordmanager.newpasswd = ''
         this.passwordmanager.newpasswd2 = ''
       },
-      notify(message) {
+      notifyNegative(message) {
         this.$q.notify({
           message: message,
-          color: 'secondary',
+          color: 'primary',
           position: 'bottom-left'
         })
       },
+      notifyPositive(message) {
+        this.$q.notify({
+          message: message,
+          color: 'positive',
+          position: 'bottom-left'
+        })
+      }
     },
     async created() {
       /**
