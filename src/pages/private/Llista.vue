@@ -291,10 +291,10 @@
       async guardarListado() {
         const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
-          this.notify("Usuaris marcats correctament")
+          this.notifyPositive("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
         } else {
-          this.notify("Hi ha hagut un error" + response.data)
+          this.notifyNegative("Hi ha hagut un error" + response.data)
         }
 
       }
@@ -303,7 +303,7 @@
         const response = await this.$axiosCore.get("/private/comedor/comun/ultima/semana")
         if (response.status === 200) {
           this.extractAlumnesAndProfesSeleccionados(response.data)
-          this.notify("Usuaris del mateix dia de la setmana pasada seleccionats")
+          this.notifyPositive("Usuaris del mateix dia de la setmana pasada seleccionats")
         }
       }
       ,
@@ -311,7 +311,7 @@
         const response = await this.$axiosCore.get("/private/comedor/comun/ayer")
         if (response.status === 200) {
           this.extractAlumnesAndProfesSeleccionados(response.data)
-          this.notify("Mateixos usuaris que ahir seleccionats")
+          this.notifyPositive("Mateixos usuaris que ahir seleccionats")
         }
       },
       extractAlumnesAndProfesSeleccionados(data) {
@@ -322,10 +322,17 @@
           this.usuariosSeleccionados.push(profe)
         })
       },
-      notify(message) {
+      notifyNegative(message) {
         this.$q.notify({
           message: message,
-          color: 'secondary',
+          color: 'primary',
+          position: 'bottom-left'
+        })
+      },
+      notifyPositive(message) {
+        this.$q.notify({
+          message: message,
+          color: 'positive',
           position: 'bottom-left'
         })
       }

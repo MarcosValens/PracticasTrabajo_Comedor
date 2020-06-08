@@ -111,13 +111,20 @@
           await this.$router.push("/")
         } else {
           // No ok
-          this.notify('Email o contrasenya incorrectes')
+          this.notifyNegative('Email o contrasenya incorrectes')
         }
       },
-      notify(message) {
+      notifyNegative(message) {
         this.$q.notify({
           message: message,
           color: 'primary',
+          position: 'bottom-left'
+        })
+      },
+      notifyPositive(message) {
+        this.$q.notify({
+          message: message,
+          color: 'positive',
           position: 'bottom-left'
         })
       },
@@ -126,7 +133,7 @@
           email: email
         })
         if (response.status === 200) {
-          this.notify("Un email de confirmació ha sigut enviat al teu correu electrònic")
+          this.notifyPositive("Un email de confirmació ha sigut enviat al teu correu electrònic")
           this.forgottenUserEmail = ''
         }
       }
