@@ -130,6 +130,7 @@
 
 
         responses[0].data.forEach(alumno => {
+
           const newAlumno = {
             nom: alumno.nom,
             ap1: alumno.ap1,
@@ -186,6 +187,7 @@
     data() {
       return {
         grups: [],
+        fotos:false,
         grupoSeleccionado: "Tots",
         myPagination: {
           rowsPerPage: 11
