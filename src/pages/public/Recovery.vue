@@ -101,21 +101,28 @@
           newPasswd2: this.newPassword2
         });
         if (response.status === 200) {
-          this.notify("Contrasenya canviada correctament. En 5 segons seràs redirigit a la pantalla de login")
+          this.notifyPositive("Contrasenya canviada correctament. En 5 segons seràs redirigit a la pantalla de login")
           setTimeout(() => {
             this.$router.push('/login')
           }, 5000)
         } else {
-          this.notify("Hi ha hagut un error. Intenta-ho de nou o contacta amb un administrador: " + response.data)
+          this.notifyNegative("Hi ha hagut un error. Intenta-ho de nou o contacta amb un administrador: " + response.data)
         }
       },
-      notify(message) {
+      notifyNegative(message) {
         this.$q.notify({
           message: message,
           color: 'primary',
           position: 'bottom-left',
         })
       },
+      notifyPositive(message) {
+        this.$q.notify({
+          message: message,
+          color: 'positive',
+          position: 'bottom-left'
+        })
+      }
     }
   }
 </script>
