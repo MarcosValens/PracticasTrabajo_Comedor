@@ -163,22 +163,24 @@
           let alumne = alumnes[i].alumne;
           let data = alumnes[i].data;
           let usuariApp = alumnes[i].usuariApp;
+
+          // Página por grupo.
+          if (i > 0 && alumnes[i].alumne.grup.curs.codi !== alumnes[i-1].alumne.grup.curs.codi){
+            yPos = 30;
+            doc.addPage();
+            this.encapcalaments(doc);
+          } else if(yPos === 190) {
+            yPos = 30;
+            doc.addPage();
+            this.encapcalaments(doc);
+          }
+
           doc.text(alumne.nom + " " + alumne.ap1 + " " + alumne.ap2, 20, yPos);
           doc.text(alumne.grup.curs.descripcio + " " + alumne.grup.nom, 90, yPos);
           doc.text(data, 130, yPos);
           doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
           // Final de página.
-          if(yPos === 190) {
-            yPos = 30;
-            doc.addPage();
-            this.encapcalaments(doc);
-          }
-          // Página por grupo.
-          if (i > 0 && alumnes[i].alumne.grup.codi !== alumnes[i-1].alumne.grup.codi){
-            yPos = 30;
-            doc.addPage();
-            this.encapcalaments(doc);
-          }
+
           yPos += 10;
         }
         doc.save();
