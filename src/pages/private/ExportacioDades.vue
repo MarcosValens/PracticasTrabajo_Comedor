@@ -183,7 +183,7 @@
         doc.setFontSize(15);
         doc.text("Nom i cognoms alumne", 20, 20);
         doc.text("Curs i grup", 90, 20);
-        doc.text("Data marcatje", 130, 20);
+        doc.text("Data marcatge", 130, 20);
         doc.text("Usuari que ha marcat", 180, 20);
         doc.setFontSize(8);
       }
