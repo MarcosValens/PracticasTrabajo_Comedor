@@ -213,6 +213,7 @@
         optionsTipoUsuario: ['Todos', 'Professor', 'Alumne'],
         tipoUsuarioSeleccionado: 'Todos',
         usuariosSeleccionados: [],
+        usuariosNoSeleccionados: [],
         filtroDeUsuarios: '',
         columns: [
           {
@@ -300,7 +301,8 @@
         })
       },
       async guardarListado() {
-        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
+        let formattedString = date.formatDate(this.date, 'YYYY-MM-DD');
+        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', {users:this.usuariosSeleccionados, fecha:formattedString})
         if (response.status === 200) {
           this.notifyPositive("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
@@ -327,7 +329,7 @@
       async seleccionarDia() {
         let timeStamp = this.date;
         let formattedString = date.formatDate(timeStamp, 'YYYY-DD-MM');
-        const response = await this.$axiosCore.get(`/comedor/comun/${formattedString}`)
+        const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
         if (response.status === 200) {
           this.extractAlumnesAndProfesSeleccionados(response)
           this.notifyPositive("Seleccionat usuaris")
