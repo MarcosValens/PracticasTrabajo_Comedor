@@ -3,7 +3,7 @@
 
     <div class="flex justify-between q-pa-sm">
       <div class="text-h4 ">Pasar llista</div>
-      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Seleccions comunes"
+      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Seleccions comuns"
              icon="fas fa-angle-down">
         <q-menu fit>
           <q-list style="min-width: 100px">
@@ -13,7 +13,6 @@
             <q-item clickable @click="seleccionarDiaPasado">
               <q-item-section>Selecció igual que ahir</q-item-section>
             </q-item>
-
           </q-list>
         </q-menu>
       </q-btn>
@@ -71,7 +70,7 @@
         <q-card class="fixed">
           <q-card-section>
             <div class="text-h6">
-              Seleccions comunes
+              Seleccions comuns
             </div>
           </q-card-section>
           <q-separator inset=""/>
@@ -89,7 +88,17 @@
                 Seleccionar los mismos usuarios que ayer
               </q-tooltip>
             </q-btn>
-
+          </q-card-section>
+          <q-separator inset=""/>
+          <q-card-section>
+            <q-date
+              v-model="date"
+              minimal
+              today-btn
+              mask="DD-MM-YYYY"
+              first-day-of-week="1"
+              @click="seleccionarDia"
+            />
           </q-card-section>
           <q-separator inset=""/>
           <q-card-actions align="right">
@@ -109,6 +118,8 @@
 
 
 <script>
+  import {date} from "quasar";
+
   export default {
     name: "PagesLlista",
     async created() {
@@ -185,6 +196,7 @@
     },
     data() {
       return {
+        date: Date.now(),
         grups: [],
         grupoSeleccionado: "Tots",
         myPagination: {
@@ -254,8 +266,7 @@
         usuariosSinFiltrar: [],
         usuariosFiltrados: []
       };
-    }
-    ,
+    },
     methods: {
       rowclick: function (evt, row) {
       }
@@ -294,7 +305,6 @@
         } else {
           this.notifyNegative("Hi ha hagut un error" + response.data)
         }
-
       }
       ,
       async seleccionarSemanaPasada() {
@@ -312,13 +322,26 @@
           this.notifyPositive("Mateixos usuaris que ahir seleccionats")
         }
       },
+      async seleccionarDia() {
+        let timeStamp = this.date;
+        let formattedString = date.formatDate(timeStamp, 'YYYY-DD-MM');
+        const response = await this.$axiosCore.get(`/comedor/comun/${formattedString}`)
+        if (response.status === 200) {
+          this.extractAlumnesAndProfesSeleccionados(response)
+          this.notifyPositive("Seleccionat usuaris")
+        }
+      },
       extractAlumnesAndProfesSeleccionados(data) {
-        data.alumnes.forEach(alumne => {
-          this.usuariosSeleccionados.push(alumne)
-        })
-        data.professors.forEach(profe => {
-          this.usuariosSeleccionados.push(profe)
-        })
+        if (data.data.alumnes != null) {
+          data.data.alumnes.forEach(alumne => {
+            this.usuariosSeleccionados.push(alumne)
+          })
+        }
+        if (data.data.professors != null) {
+          data.data.professors.forEach(profe => {
+            this.usuariosSeleccionados.push(profe)
+          })
+        }
       },
       notifyNegative(message) {
         this.$q.notify({
