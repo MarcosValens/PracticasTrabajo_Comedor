@@ -172,7 +172,11 @@
           doc.text(alumne.ap1 + " " + alumne.ap2 + " " + alumne.nom + " ", 20, yPos);
           doc.text(alumne.grup.curs.descripcio + " " + alumne.grup.nom, 90, yPos);
           doc.text(data, 130, yPos);
-          doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
+          if (usuariApp.nombre === null || usuariApp.apellido1 === null || usuariApp.apellido2 === null){
+            doc.text(usuariApp.email, 180, yPos);
+          } else {
+            doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
+          }
           // Final de página.
 
           yPos += 10;
