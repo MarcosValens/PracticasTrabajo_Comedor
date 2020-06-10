@@ -133,13 +133,7 @@
 
           // Se ordenan los alumnos por grupo.
           alumnes.sort(function (a, b) {
-            if (a.alumne.grup.codi > b.alumne.grup.codi) {
-              return 1;
-            }
-            if (a.alumne.grup.codi < b.alumne.grup.codi) {
-              return -1;
-            }
-            return 0;
+            return a.alumne.grup.codi - b.alumne.grup.codi || a.alumne.ap1.charCodeAt(0) - b.alumne.ap1.charCodeAt(0);
           });
 
           if (alumnes.length > 0){
@@ -169,13 +163,13 @@
             yPos = 30;
             doc.addPage();
             this.encapcalaments(doc);
-          } else if(yPos === 190) {
+          } else if(yPos >= 190) {
             yPos = 30;
             doc.addPage();
             this.encapcalaments(doc);
           }
 
-          doc.text(alumne.nom + " " + alumne.ap1 + " " + alumne.ap2, 20, yPos);
+          doc.text(alumne.ap1 + " " + alumne.ap2 + " " + alumne.nom + " ", 20, yPos);
           doc.text(alumne.grup.curs.descripcio + " " + alumne.grup.nom, 90, yPos);
           doc.text(data, 130, yPos);
           doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
