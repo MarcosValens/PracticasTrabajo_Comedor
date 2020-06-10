@@ -50,7 +50,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
+    <q-drawer v-if="roles.includes('cuiner') || roles.includes('monitor')"
       v-model="drawer"
       show-if-above
       bordered

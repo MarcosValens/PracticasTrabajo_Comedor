@@ -133,13 +133,7 @@
 
           // Se ordenan los alumnos por grupo.
           alumnes.sort(function (a, b) {
-            if (a.alumne.grup.codi > b.alumne.grup.codi) {
-              return 1;
-            }
-            if (a.alumne.grup.codi < b.alumne.grup.codi) {
-              return -1;
-            }
-            return 0;
+            return a.alumne.grup.codi - b.alumne.grup.codi || a.alumne.ap1.charCodeAt(0) - b.alumne.ap1.charCodeAt(0);
           });
 
           if (alumnes.length > 0){
@@ -163,22 +157,28 @@
           let alumne = alumnes[i].alumne;
           let data = alumnes[i].data;
           let usuariApp = alumnes[i].usuariApp;
-          doc.text(alumne.nom + " " + alumne.ap1 + " " + alumne.ap2, 20, yPos);
+
+          // Página por grupo.
+          if (i > 0 && alumnes[i].alumne.grup.curs.codi !== alumnes[i-1].alumne.grup.curs.codi){
+            yPos = 30;
+            doc.addPage();
+            this.encapcalaments(doc);
+          } else if(yPos >= 190) {
+            yPos = 30;
+            doc.addPage();
+            this.encapcalaments(doc);
+          }
+
+          doc.text(alumne.ap1 + " " + alumne.ap2 + " " + alumne.nom + " ", 20, yPos);
           doc.text(alumne.grup.curs.descripcio + " " + alumne.grup.nom, 90, yPos);
           doc.text(data, 130, yPos);
-          doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
+          if (usuariApp.nombre === null || usuariApp.apellido1 === null || usuariApp.apellido2 === null){
+            doc.text(usuariApp.email, 180, yPos);
+          } else {
+            doc.text(usuariApp.nombre + " " + usuariApp.apellido1 + " " + usuariApp.apellido2, 180, yPos);
+          }
           // Final de página.
-          if(yPos === 190) {
-            yPos = 30;
-            doc.addPage();
-            this.encapcalaments(doc);
-          }
-          // Página por grupo.
-          if (i > 0 && alumnes[i].alumne.grup.codi !== alumnes[i-1].alumne.grup.codi){
-            yPos = 30;
-            doc.addPage();
-            this.encapcalaments(doc);
-          }
+
           yPos += 10;
         }
         doc.save();
@@ -187,7 +187,7 @@
         doc.setFontSize(15);
         doc.text("Nom i cognoms alumne", 20, 20);
         doc.text("Curs i grup", 90, 20);
-        doc.text("Data marcatje", 130, 20);
+        doc.text("Data marcatge", 130, 20);
         doc.text("Usuari que ha marcat", 180, 20);
         doc.setFontSize(8);
       }
