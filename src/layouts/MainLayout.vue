@@ -81,7 +81,7 @@
       <div class="q-pa-md">
         <q-separator class="q-mb-md"/>
         <div class="flex justify-end">
-          <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconectarse" @click="disconnect"/>
+          <q-btn dense color="secondary" outline icon-right="exit_to_app" label="Desconnectar-se" @click="disconnect"/>
         </div>
       </div>
 
@@ -104,7 +104,7 @@
             <q-btn dense color="secondary" outline icon-right="exit_to_app" @click="disconnect">
               <q-tooltip
                 transition-hide="slide-left" content-class="bg-secondary" anchor="center right" self="center left">
-                Desconectarse
+                Desconnectar-se
               </q-tooltip>
             </q-btn>
           </div>
