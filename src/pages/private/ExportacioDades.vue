@@ -122,6 +122,7 @@
           if (this.grupsSeleccionats.length !== 0) {
             let alumnesSeleccionats = [];
             alumnes.forEach(alumne => {
+              alumne.data = moment(alumne.data, 'YYYY-MM-DD').format('DD-MM-YYYY');
               this.grupsSeleccionats.forEach(grup => {
                 if (alumne.alumne.grup.codi === grup.codi){
                   alumnesSeleccionats.push(alumne);
