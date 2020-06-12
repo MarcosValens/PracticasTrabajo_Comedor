@@ -1,9 +1,8 @@
 <template>
   <q-page class="q-pa-md">
-
     <div class="flex justify-between q-pa-sm">
       <div class="text-h4 ">Pasar llista</div>
-      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Seleccions comuns"
+      <q-btn unelevated color="primary" v-if="$q.screen.lt.lg" class="full-width" label="Seleccions comunes"
              icon="fas fa-angle-down">
         <q-menu fit>
           <q-list style="min-width: 100px">
@@ -13,6 +12,7 @@
             <q-item clickable @click="seleccionarDiaPasado">
               <q-item-section>Selecció igual que ahir</q-item-section>
             </q-item>
+
           </q-list>
         </q-menu>
       </q-btn>
@@ -21,6 +21,7 @@
     <div class="row">
       <div class="col-lg-9 col-12  q-pa-sm">
         <q-table
+        v-if="$q.screen.width>600"
           :data="usuariosFiltrados"
           :columns="columns"
           @row-click="rowclick"
@@ -31,6 +32,52 @@
           rows-per-page-label="Usuarios por fila"
           :pagination.sync="myPagination"
           separator="cell"
+        >
+          <template v-slot:top class="bg-indigo">
+            <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
+              <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
+                        v-model="tipoUsuarioSeleccionado"
+                        :options="optionsTipoUsuario" label="Tipo de usuario"
+                        @input="filterUsuarios(filtroDeUsuarios)"
+                        :readonly="soloPuedeFicharAlumnos"
+              >
+
+                <q-tooltip v-if="soloPuedeFicharAlumnos">Nomes cuiners poden marcar altres usuaris que alumnes
+                </q-tooltip>
+              </q-select>
+
+              <div class="row" >
+                <q-input :class="$q.screen.lt.lg?'full-width q-mb-sm':'q-mr-sm'" outlined dense debounce="300"
+                         v-model="filtroDeUsuarios" placeholder="Cercar"
+                         @input="filterUsuarios">
+                  <template v-slot:append>
+                    <q-icon name="search"/>
+                  </template>
+                </q-input>
+                <q-select :class="$q.screen.lt.lg?'full-width q-mb-sm':''" dense style="min-width: 200px" outlined
+                          v-model="grupoSeleccionado"
+                          :options="grups" label="Grup"
+                          :readonly="tipoUsuarioSeleccionado!=='Alumne'"
+                          @input="filterUsuarios"/>
+              </div>
+
+            </div>
+          </template>
+
+        </q-table>
+        <q-table
+        v-else
+          :data="usuariosFiltrados"
+          :columns="columnsMobile"
+          selection="multiple"
+          @row-click="rowclick"
+          :selected-rows-label="getSelectedString"
+          row-key="codi"
+          :selected.sync="usuariosSeleccionados"
+          rows-per-page-label="Usuarios por fila"
+          :pagination.sync="myPagination"
+          separator="cell"
+          grid
         >
           <template v-slot:top class="bg-indigo">
             <div :class="$q.screen.gt.md?'full-width flex justify-between':'full-width'">
@@ -70,7 +117,7 @@
         <q-card class="fixed">
           <q-card-section>
             <div class="text-h6">
-              Seleccions comuns
+              Seleccions comunes
             </div>
           </q-card-section>
           <q-separator inset=""/>
@@ -88,23 +135,16 @@
                 Seleccionar los mismos usuarios que ayer
               </q-tooltip>
             </q-btn>
-          </q-card-section>
-          <q-separator inset=""/>
-          <q-card-section>
-            <q-date
-              v-model="date"
-              minimal
-              today-btn
-              mask="DD-MM-YYYY"
-              first-day-of-week="1"
-              @click="seleccionarDia"
-            />
+
           </q-card-section>
           <q-separator inset=""/>
           <q-card-actions align="right">
             <q-btn color="primary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
           </q-card-actions>
+
         </q-card>
+
+
       </div>
     </div>
 
@@ -112,14 +152,12 @@
     <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="$q.screen.lt.lg">
       <q-btn fab-mini color="secondary" icon="far fa-save" @click="guardarListado"/>
     </q-page-sticky>
-
   </q-page>
+
 </template>
 
 
 <script>
-  import {date} from "quasar";
-
   export default {
     name: "PagesLlista",
     async created() {
@@ -131,6 +169,8 @@
       /*
       * Cogemos alumnos
       * */
+
+      this.date=moment(moment()._d).format('DD-MM-YYYY')
       const promise = []
       promise.push(this.$axiosCore.get('/private/alumne/comedor/listado'))
       promise.push(this.$axiosCore.get('/private/professor/comedor/listado'))
@@ -141,7 +181,6 @@
 
 
         responses[0].data.forEach(alumno => {
-
           const newAlumno = {
             nom: alumno.nom,
             ap1: alumno.ap1,
@@ -196,11 +235,12 @@
 
     },
     data() {
+
       return {
-        date: Date.now(),
         grups: [],
         fotos:false,
         grupoSeleccionado: "Tots",
+        date: null,
         myPagination: {
           rowsPerPage: 11
         },
@@ -213,8 +253,25 @@
         optionsTipoUsuario: ['Todos', 'Professor', 'Alumne'],
         tipoUsuarioSeleccionado: 'Todos',
         usuariosSeleccionados: [],
-        usuariosNoSeleccionados: [],
         filtroDeUsuarios: '',
+        columnsMobile: [{
+            name: "nom",
+            required: true,
+            label: "Nom",
+            align: "center",
+            field: row => row.nom+" "+row.ap1+" "+row.ap2,
+            format: val => `${val}`,
+            sortable: true
+          },
+          {
+            name: "grup",
+            required: false,
+            label: "Grupo (Alumnos)",
+            align: "center",
+            field: row => row.grup,
+            format: val => `${val}`,
+            sortable: true
+          }],
         columns: [
           {
             name: "nom",
@@ -269,11 +326,19 @@
         usuariosSinFiltrar: [],
         usuariosFiltrados: []
       };
-    },
+    }
+    ,
     methods: {
       rowclick: function (evt, row) {
+        if(!this.usuariosSeleccionados.includes(row)){
+          this.usuariosSeleccionados.push(row)
+        }
+        else{
+          this.usuariosSeleccionados = this.usuariosSeleccionados.filter(val =>val!=row)
+        }
       }
       ,
+
       orderUsuaris(users) {
         return users.sort((a, b) => a.nom.localeCompare(b.nom, 'ca', {sensitivity: 'base'}))
       }
@@ -301,8 +366,7 @@
         })
       },
       async guardarListado() {
-        let formattedString = date.formatDate(this.date, 'YYYY-MM-DD');
-        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', {users:this.usuariosSeleccionados, fecha:formattedString})
+        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
         if (response.status === 200) {
           this.notifyPositive("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
@@ -326,27 +390,15 @@
           this.notifyPositive("Mateixos usuaris que ahir seleccionats")
         }
       },
-      async seleccionarDia() {
-        let timeStamp = this.date;
-        let formattedString = date.formatDate(timeStamp, 'YYYY-DD-MM');
-        const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
-        if (response.status === 200) {
-          this.extractAlumnesAndProfesSeleccionados(response)
-          this.notifyPositive("Seleccionat usuaris")
-        }
-      },
       extractAlumnesAndProfesSeleccionados(data) {
-        if (data.data.alumnes != null) {
-          data.data.alumnes.forEach(alumne => {
-            this.usuariosSeleccionados.push(alumne)
-          })
-        }
-        if (data.data.professors != null) {
-          data.data.professors.forEach(profe => {
-            this.usuariosSeleccionados.push(profe)
-          })
-        }
+        data.alumnes.forEach(alumne => {
+          this.usuariosSeleccionados.push(alumne)
+        })
+        data.professors.forEach(profe => {
+          this.usuariosSeleccionados.push(profe)
+        })
       },
+
       notifyNegative(message) {
         this.$q.notify({
           message: message,
@@ -360,8 +412,19 @@
           color: 'positive',
           position: 'bottom-left'
         })
-      }
-    }
+      },
+      async seleccionarDia() {
+        let timeStamp = this.date;
+        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-DD-MM');
+        const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
+        if (response.status === 200) {
+          this.extractAlumnesAndProfesSeleccionados(response)
+          this.notifyPositive("Seleccionat usuaris")
+        }
+      },
+
+    },
+
   }
   ;
 </script>
