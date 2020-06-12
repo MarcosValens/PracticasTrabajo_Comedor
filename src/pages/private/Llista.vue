@@ -435,7 +435,7 @@
       },
       async seleccionarDia() {
         let timeStamp = this.date;
-        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-DD-MM');
+        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-MM-DD');
         console.log(formattedString)
         const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
         console.log(response)
