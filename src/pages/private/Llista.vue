@@ -137,6 +137,18 @@
             </q-btn>
 
           </q-card-section>
+
+          <q-separator inset=""/>
+          <q-card-section>
+            <q-date
+              v-model="date"
+              minimal
+              today-btn
+              mask="DD-MM-YYYY"
+              first-day-of-week="1"
+              @click="seleccionarDia"
+            />
+          </q-card-section>
           <q-separator inset=""/>
           <q-card-actions align="right">
             <q-btn color="primary" label="Guardar listado" icon="fas fa-pencil-alt" @click="guardarListado"/>
@@ -158,7 +170,7 @@
 
 
 <script>
-  import moment from 'moment'
+ import moment from 'moment'
   export default {
     name: "PagesLlista",
     async created() {
@@ -367,7 +379,9 @@
         })
       },
       async guardarListado() {
-        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', this.usuariosSeleccionados)
+        let formattedString = moment(this.date, 'DD-MM-YYYY').format('YYYY-MM-DD');
+        console.log(formattedString)
+        const response = await this.$axiosCore.post('/private/usuarios/comedor/listado', {users:this.usuariosSeleccionados, fecha:formattedString})
         if (response.status === 200) {
           this.notifyPositive("Usuaris marcats correctament")
           this.usuariosSeleccionados = [] // BORRAMOS LAS SELECCIONES
@@ -392,12 +406,17 @@
         }
       },
       extractAlumnesAndProfesSeleccionados(data) {
-        data.alumnes.forEach(alumne => {
-          this.usuariosSeleccionados.push(alumne)
-        })
-        data.professors.forEach(profe => {
-          this.usuariosSeleccionados.push(profe)
-        })
+        this.usuariosSeleccionados = []
+        if (data.data.alumnes != null) {
+          data.data.alumnes.forEach(alumne => {
+            this.usuariosSeleccionados.push(alumne)
+          })
+        }
+        if (data.data.professors != null) {
+          data.data.professors.forEach(profe => {
+            this.usuariosSeleccionados.push(profe)
+          })
+        }
       },
 
       notifyNegative(message) {
@@ -416,16 +435,16 @@
       },
       async seleccionarDia() {
         let timeStamp = this.date;
-        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-MM-DD');
+        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-DD-MM');
+        console.log(formattedString)
         const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
+        console.log(response)
         if (response.status === 200) {
           this.extractAlumnesAndProfesSeleccionados(response)
           this.notifyPositive("Seleccionat usuaris")
         }
       },
-
     },
-
   }
   ;
 </script>
