@@ -415,7 +415,7 @@
       },
       async seleccionarDia() {
         let timeStamp = this.date;
-        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-DD-MM');
+        let formattedString = moment(timeStamp, 'DD-MM-YYYY').format('YYYY-MM-DD');
         const response = await this.$axiosCore.get(`/private/comedor/comun/${formattedString}`)
         if (response.status === 200) {
           this.extractAlumnesAndProfesSeleccionados(response)
